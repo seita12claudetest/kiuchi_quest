@@ -111,4 +111,25 @@ describe('BattleSystem', () => {
     expect(result.power).toBe(8)
     expect(result.health.blood).toBeGreaterThan(120)
   })
+
+  it('should roll drop items with injected randomness', () => {
+    const bs = new BattleSystem(() => 0.4)
+    const enemy = makeEnemy({
+      drops: [
+        { itemId: 'common', rate: 0.5 },
+        { itemId: 'rare', rate: 0.1 },
+      ]
+    })
+
+    expect(bs.rollDrops(enemy)).toEqual(['common'])
+  })
+
+  it('should grant SP for each level up', () => {
+    const bs = new BattleSystem()
+    const player = makePlayer({ xp: 39, nextXp: 40, level: 1, sp: 2 })
+    const result = bs.checkLevelUp(player, 100)
+
+    expect(result.level).toBeGreaterThan(1)
+    expect(result.sp).toBeGreaterThan(2)
+  })
 })
