@@ -1,13 +1,14 @@
 import type { PlayerState, EnemyDef } from '@/types'
 
 export class BattleSystem {
+  constructor(private readonly rng: () => number = Math.random) {}
   calcPlayerDamage(player: PlayerState, enemy: EnemyDef): number {
-    const base = player.power - enemy.def + Math.floor(Math.random() * 5)
+    const base = player.power - enemy.def + Math.floor(this.rng() * 5)
     return Math.max(1, base)
   }
 
   calcEnemyDamage(enemy: EnemyDef, player: PlayerState): number {
-    const base = enemy.atk - player.def + Math.floor(Math.random() * 4)
+    const base = enemy.atk - player.def + Math.floor(this.rng() * 4)
     return Math.max(1, base)
   }
 
@@ -20,7 +21,7 @@ export class BattleSystem {
   }
 
   tryRun(): boolean {
-    return Math.random() < 0.62
+    return this.rng() < 0.62
   }
 
   applyFatten(player: PlayerState): PlayerState {
@@ -57,6 +58,12 @@ export class BattleSystem {
       xp: player.xp + enemy.xp,
       gold: player.gold + enemy.gold,
     }
+  }
+
+  rollDrops(enemy: EnemyDef): string[] {
+    return enemy.drops
+      .filter((drop) => this.rng() < drop.rate)
+      .map((drop) => drop.itemId)
   }
 
   checkLevelUp(player: PlayerState, xpGain: number): PlayerState {
