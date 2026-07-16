@@ -1,0 +1,99 @@
+import type { EnemyDef } from '@/types'
+
+export const enemies: Record<string, EnemyDef> = {
+  ramenSlime: {
+    id: 'ramenSlime',
+    name: 'ラーメンスライム',
+    hp: 18,
+    atk: 5,
+    def: 1,
+    xp: 12,
+    gold: 80,
+    drops: [{ itemId: 'instant_ramen', rate: 0.35 }],
+    healthDamage: { blood: 2, uric: 0.1, chol: 4, liver: 1, sugar: 2 },
+    category: 'yokocho',
+    sprite: { atlas: 'enemies', x: 0, y: 0, w: 32, h: 32 },
+  },
+  yakitoriBoss: {
+    id: 'yakitoriBoss',
+    name: '焼き鳥大将',
+    hp: 90,
+    atk: 12,
+    def: 5,
+    xp: 80,
+    gold: 450,
+    drops: [{ itemId: 'legendary_skewer', rate: 1 }],
+    healthDamage: { blood: 8, uric: 0.4, chol: 12, liver: 5, sugar: 6 },
+    category: 'boss',
+    sprite: { atlas: 'bosses', x: 0, y: 0, w: 64, h: 64 },
+    skills: ['charcoalBurst'],
+    boss: true,
+  },
+}
+
+export function getEnemyDef(enemyId: string): EnemyDef {
+  const enemy = enemies[enemyId]
+  if (!enemy) {
+    throw new Error(`Unknown enemy: ${enemyId}`)
+  }
+  return enemy
+}
+import type { EnemyDef } from '../types'
+
+export const enemies: EnemyDef[] = [
+  { id: 'enemy_001', name: '焼き鳥煙', hp: 30, atk: 6, def: 2, xp: 8, gold: 10, drops: [{ itemId: 'item_001', rate: 0.1 }], healthDamage: { blood: 0, uric: 0, chol: 0, liver: 0, sugar: 0 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 0, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_002', name: '深夜ラーメン', hp: 34, atk: 7, def: 3, xp: 10, gold: 13, drops: [{ itemId: 'item_002', rate: 0.2 }], healthDamage: { blood: 1, uric: 1, chol: 1, liver: 1, sugar: 1 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 1, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_003', name: '酔いどれ客', hp: 38, atk: 8, def: 4, xp: 12, gold: 16, drops: [{ itemId: 'item_003', rate: 0.3 }], healthDamage: { blood: 2, uric: 2, chol: 2, liver: 2, sugar: 2 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 2, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_004', name: '呼び込み影', hp: 42, atk: 9, def: 5, xp: 14, gold: 19, drops: [{ itemId: 'item_004', rate: 0.4 }], healthDamage: { blood: 3, uric: 0, chol: 3, liver: 3, sugar: 3 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 3, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_005', name: '串カツ油', hp: 46, atk: 10, def: 6, xp: 16, gold: 22, drops: [{ itemId: 'item_005', rate: 0.5 }], healthDamage: { blood: 0, uric: 1, chol: 4, liver: 0, sugar: 4 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 4, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_006', name: '路地裏ネズミ', hp: 50, atk: 11, def: 7, xp: 18, gold: 25, drops: [{ itemId: 'item_006', rate: 0.1 }], healthDamage: { blood: 1, uric: 2, chol: 0, liver: 1, sugar: 0 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 5, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_007', name: '終電ダッシュ', hp: 54, atk: 12, def: 8, xp: 20, gold: 28, drops: [{ itemId: 'item_007', rate: 0.2 }], healthDamage: { blood: 2, uric: 0, chol: 1, liver: 2, sugar: 1 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 6, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_008', name: 'カラオケ魔人', hp: 58, atk: 13, def: 9, xp: 22, gold: 31, drops: [{ itemId: 'item_008', rate: 0.3 }], healthDamage: { blood: 3, uric: 1, chol: 2, liver: 3, sugar: 2 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 7, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_009', name: '赤提灯ゴースト', hp: 62, atk: 14, def: 2, xp: 24, gold: 34, drops: [{ itemId: 'item_009', rate: 0.4 }], healthDamage: { blood: 0, uric: 2, chol: 3, liver: 0, sugar: 3 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 8, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_010', name: 'たこ焼き熱波', hp: 66, atk: 15, def: 3, xp: 26, gold: 37, drops: [{ itemId: 'item_010', rate: 0.5 }], healthDamage: { blood: 1, uric: 0, chol: 4, liver: 1, sugar: 4 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 9, y: 0, w: 32, h: 32 } },
+  { id: 'enemy_011', name: '資料山', hp: 70, atk: 16, def: 4, xp: 28, gold: 40, drops: [{ itemId: 'item_011', rate: 0.1 }], healthDamage: { blood: 2, uric: 1, chol: 0, liver: 2, sugar: 0 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 0, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_012', name: '未読メール', hp: 74, atk: 17, def: 5, xp: 30, gold: 43, drops: [{ itemId: 'item_012', rate: 0.2 }], healthDamage: { blood: 3, uric: 2, chol: 1, liver: 3, sugar: 1 }, category: 'yokocho', sprite: { atlas: 'enemies', x: 1, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_013', name: '会議スライム', hp: 78, atk: 6, def: 6, xp: 32, gold: 46, drops: [{ itemId: 'item_013', rate: 0.3 }], healthDamage: { blood: 0, uric: 0, chol: 2, liver: 0, sugar: 2 }, category: 'office', sprite: { atlas: 'enemies', x: 2, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_014', name: '残業タイマー', hp: 82, atk: 7, def: 7, xp: 34, gold: 49, drops: [{ itemId: 'item_014', rate: 0.4 }], healthDamage: { blood: 1, uric: 1, chol: 3, liver: 1, sugar: 3 }, category: 'office', sprite: { atlas: 'enemies', x: 3, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_015', name: 'コピー機ジャム', hp: 86, atk: 8, def: 8, xp: 36, gold: 52, drops: [{ itemId: 'item_015', rate: 0.5 }], healthDamage: { blood: 2, uric: 2, chol: 4, liver: 2, sugar: 4 }, category: 'office', sprite: { atlas: 'enemies', x: 4, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_016', name: '稟議ドラゴン', hp: 90, atk: 9, def: 9, xp: 38, gold: 55, drops: [{ itemId: 'item_016', rate: 0.1 }], healthDamage: { blood: 3, uric: 0, chol: 0, liver: 3, sugar: 0 }, category: 'office', sprite: { atlas: 'enemies', x: 5, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_017', name: '電話ベル', hp: 94, atk: 10, def: 2, xp: 40, gold: 58, drops: [{ itemId: 'item_017', rate: 0.2 }], healthDamage: { blood: 0, uric: 1, chol: 1, liver: 0, sugar: 1 }, category: 'office', sprite: { atlas: 'enemies', x: 6, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_018', name: '付箋ニンジャ', hp: 98, atk: 11, def: 3, xp: 42, gold: 61, drops: [{ itemId: 'item_018', rate: 0.3 }], healthDamage: { blood: 1, uric: 2, chol: 2, liver: 1, sugar: 2 }, category: 'office', sprite: { atlas: 'enemies', x: 7, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_019', name: '椅子ギシギシ', hp: 102, atk: 12, def: 4, xp: 44, gold: 64, drops: [{ itemId: 'item_019', rate: 0.4 }], healthDamage: { blood: 2, uric: 0, chol: 3, liver: 2, sugar: 3 }, category: 'office', sprite: { atlas: 'enemies', x: 8, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_020', name: '締切ゾンビ', hp: 106, atk: 13, def: 5, xp: 46, gold: 67, drops: [{ itemId: 'item_020', rate: 0.5 }], healthDamage: { blood: 3, uric: 1, chol: 4, liver: 3, sugar: 4 }, category: 'office', sprite: { atlas: 'enemies', x: 9, y: 1, w: 32, h: 32 } },
+  { id: 'enemy_021', name: '高血圧ウォール', hp: 110, atk: 14, def: 6, xp: 48, gold: 70, drops: [{ itemId: 'item_001', rate: 0.1 }], healthDamage: { blood: 0, uric: 2, chol: 0, liver: 0, sugar: 0 }, category: 'office', sprite: { atlas: 'enemies', x: 0, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_022', name: '尿酸クリスタル', hp: 114, atk: 15, def: 7, xp: 50, gold: 73, drops: [{ itemId: 'item_002', rate: 0.2 }], healthDamage: { blood: 1, uric: 0, chol: 1, liver: 1, sugar: 1 }, category: 'office', sprite: { atlas: 'enemies', x: 1, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_023', name: '悪玉コレステ', hp: 118, atk: 16, def: 8, xp: 52, gold: 76, drops: [{ itemId: 'item_003', rate: 0.3 }], healthDamage: { blood: 2, uric: 1, chol: 2, liver: 2, sugar: 2 }, category: 'health', sprite: { atlas: 'enemies', x: 2, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_024', name: '肝臓アラート', hp: 122, atk: 17, def: 9, xp: 54, gold: 79, drops: [{ itemId: 'item_004', rate: 0.4 }], healthDamage: { blood: 3, uric: 2, chol: 3, liver: 3, sugar: 3 }, category: 'health', sprite: { atlas: 'enemies', x: 3, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_025', name: '血糖スパイク', hp: 126, atk: 6, def: 2, xp: 56, gold: 82, drops: [{ itemId: 'item_005', rate: 0.5 }], healthDamage: { blood: 0, uric: 0, chol: 4, liver: 0, sugar: 4 }, category: 'health', sprite: { atlas: 'enemies', x: 4, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_026', name: '睡眠不足', hp: 130, atk: 7, def: 3, xp: 58, gold: 85, drops: [{ itemId: 'item_006', rate: 0.1 }], healthDamage: { blood: 1, uric: 1, chol: 0, liver: 1, sugar: 0 }, category: 'health', sprite: { atlas: 'enemies', x: 5, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_027', name: '運動不足', hp: 134, atk: 8, def: 4, xp: 60, gold: 88, drops: [{ itemId: 'item_007', rate: 0.2 }], healthDamage: { blood: 2, uric: 2, chol: 1, liver: 2, sugar: 1 }, category: 'health', sprite: { atlas: 'enemies', x: 6, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_028', name: 'ストレス雲', hp: 138, atk: 9, def: 5, xp: 62, gold: 91, drops: [{ itemId: 'item_008', rate: 0.3 }], healthDamage: { blood: 3, uric: 0, chol: 2, liver: 3, sugar: 2 }, category: 'health', sprite: { atlas: 'enemies', x: 7, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_029', name: '塩分ゴーレム', hp: 142, atk: 10, def: 6, xp: 64, gold: 94, drops: [{ itemId: 'item_009', rate: 0.4 }], healthDamage: { blood: 0, uric: 1, chol: 3, liver: 0, sugar: 3 }, category: 'health', sprite: { atlas: 'enemies', x: 8, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_030', name: '脂質バブル', hp: 146, atk: 11, def: 7, xp: 66, gold: 97, drops: [{ itemId: 'item_010', rate: 0.5 }], healthDamage: { blood: 1, uric: 2, chol: 4, liver: 1, sugar: 4 }, category: 'health', sprite: { atlas: 'enemies', x: 9, y: 2, w: 32, h: 32 } },
+  { id: 'enemy_031', name: '部長の圧', hp: 150, atk: 12, def: 8, xp: 68, gold: 100, drops: [{ itemId: 'item_011', rate: 0.1 }], healthDamage: { blood: 2, uric: 0, chol: 0, liver: 2, sugar: 0 }, category: 'health', sprite: { atlas: 'enemies', x: 0, y: 3, w: 32, h: 32 } },
+  { id: 'enemy_032', name: '健康診断官', hp: 154, atk: 13, def: 9, xp: 70, gold: 103, drops: [{ itemId: 'item_012', rate: 0.2 }], healthDamage: { blood: 3, uric: 1, chol: 1, liver: 3, sugar: 1 }, category: 'health', sprite: { atlas: 'enemies', x: 1, y: 3, w: 32, h: 32 } },
+  { id: 'enemy_033', name: '横丁キング', hp: 158, atk: 14, def: 2, xp: 72, gold: 106, drops: [{ itemId: 'item_013', rate: 0.3 }], healthDamage: { blood: 0, uric: 2, chol: 2, liver: 0, sugar: 2 }, category: 'boss', sprite: { atlas: 'enemies', x: 2, y: 3, w: 32, h: 32 }, boss: true },
+  { id: 'enemy_034', name: '年度末魔王', hp: 162, atk: 15, def: 3, xp: 74, gold: 109, drops: [{ itemId: 'item_014', rate: 0.4 }], healthDamage: { blood: 1, uric: 0, chol: 3, liver: 1, sugar: 3 }, category: 'boss', sprite: { atlas: 'enemies', x: 3, y: 3, w: 32, h: 32 }, boss: true },
+  { id: 'enemy_035', name: '痛風大王', hp: 166, atk: 16, def: 4, xp: 76, gold: 112, drops: [{ itemId: 'item_015', rate: 0.5 }], healthDamage: { blood: 2, uric: 1, chol: 4, liver: 2, sugar: 4 }, category: 'boss', sprite: { atlas: 'enemies', x: 4, y: 3, w: 32, h: 32 }, boss: true },
+  { id: 'enemy_036', name: '監査フェニックス', hp: 170, atk: 17, def: 5, xp: 78, gold: 115, drops: [{ itemId: 'item_016', rate: 0.1 }], healthDamage: { blood: 3, uric: 2, chol: 0, liver: 3, sugar: 0 }, category: 'boss', sprite: { atlas: 'enemies', x: 5, y: 3, w: 32, h: 32 }, boss: true },
+  { id: 'enemy_037', name: '宴会幹事長', hp: 174, atk: 6, def: 6, xp: 80, gold: 118, drops: [{ itemId: 'item_017', rate: 0.2 }], healthDamage: { blood: 0, uric: 0, chol: 1, liver: 0, sugar: 1 }, category: 'boss', sprite: { atlas: 'enemies', x: 6, y: 3, w: 32, h: 32 }, boss: true },
+  { id: 'enemy_038', name: '満腹暴走', hp: 178, atk: 7, def: 7, xp: 82, gold: 121, drops: [{ itemId: 'item_018', rate: 0.3 }], healthDamage: { blood: 1, uric: 1, chol: 2, liver: 1, sugar: 2 }, category: 'boss', sprite: { atlas: 'enemies', x: 7, y: 3, w: 32, h: 32 }, boss: true },
+  { id: 'enemy_039', name: '雨宿りミミック', hp: 182, atk: 8, def: 8, xp: 84, gold: 124, drops: [{ itemId: 'item_019', rate: 0.4 }], healthDamage: { blood: 2, uric: 2, chol: 3, liver: 2, sugar: 3 }, category: 'event', sprite: { atlas: 'enemies', x: 8, y: 3, w: 32, h: 32 } },
+  { id: 'enemy_040', name: '祭囃子天狗', hp: 186, atk: 9, def: 9, xp: 86, gold: 127, drops: [{ itemId: 'item_020', rate: 0.5 }], healthDamage: { blood: 3, uric: 0, chol: 4, liver: 3, sugar: 4 }, category: 'event', sprite: { atlas: 'enemies', x: 9, y: 3, w: 32, h: 32 } },
+  { id: 'enemy_041', name: '迷子の請求書', hp: 190, atk: 10, def: 2, xp: 88, gold: 130, drops: [{ itemId: 'item_001', rate: 0.1 }], healthDamage: { blood: 0, uric: 1, chol: 0, liver: 0, sugar: 0 }, category: 'event', sprite: { atlas: 'enemies', x: 0, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_042', name: '自販機ルーレット', hp: 194, atk: 11, def: 3, xp: 90, gold: 133, drops: [{ itemId: 'item_002', rate: 0.2 }], healthDamage: { blood: 1, uric: 2, chol: 1, liver: 1, sugar: 1 }, category: 'event', sprite: { atlas: 'enemies', x: 1, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_043', name: '朝礼の亡霊', hp: 198, atk: 12, def: 4, xp: 92, gold: 136, drops: [{ itemId: 'item_003', rate: 0.3 }], healthDamage: { blood: 2, uric: 0, chol: 2, liver: 2, sugar: 2 }, category: 'event', sprite: { atlas: 'enemies', x: 2, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_044', name: '昼休みハンター', hp: 202, atk: 13, def: 5, xp: 94, gold: 139, drops: [{ itemId: 'item_004', rate: 0.4 }], healthDamage: { blood: 3, uric: 1, chol: 3, liver: 3, sugar: 3 }, category: 'event', sprite: { atlas: 'enemies', x: 3, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_045', name: '夜更かし梟', hp: 206, atk: 14, def: 6, xp: 96, gold: 142, drops: [{ itemId: 'item_005', rate: 0.5 }], healthDamage: { blood: 0, uric: 2, chol: 4, liver: 0, sugar: 4 }, category: 'event', sprite: { atlas: 'enemies', x: 4, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_046', name: '地下鉄サーディン', hp: 210, atk: 15, def: 7, xp: 98, gold: 145, drops: [{ itemId: 'item_006', rate: 0.1 }], healthDamage: { blood: 1, uric: 0, chol: 0, liver: 1, sugar: 0 }, category: 'event', sprite: { atlas: 'enemies', x: 5, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_047', name: '弁当争奪兵', hp: 214, atk: 16, def: 8, xp: 100, gold: 148, drops: [{ itemId: 'item_007', rate: 0.2 }], healthDamage: { blood: 2, uric: 1, chol: 1, liver: 2, sugar: 1 }, category: 'event', sprite: { atlas: 'enemies', x: 6, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_048', name: '誘惑パフェ', hp: 218, atk: 17, def: 9, xp: 102, gold: 151, drops: [{ itemId: 'item_008', rate: 0.3 }], healthDamage: { blood: 3, uric: 2, chol: 2, liver: 3, sugar: 2 }, category: 'event', sprite: { atlas: 'enemies', x: 7, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_049', name: '二次会ワープ', hp: 222, atk: 6, def: 2, xp: 104, gold: 154, drops: [{ itemId: 'item_009', rate: 0.4 }], healthDamage: { blood: 0, uric: 0, chol: 3, liver: 0, sugar: 3 }, category: 'event', sprite: { atlas: 'enemies', x: 8, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_050', name: '月曜ブルー', hp: 226, atk: 7, def: 3, xp: 106, gold: 157, drops: [{ itemId: 'item_010', rate: 0.5 }], healthDamage: { blood: 1, uric: 1, chol: 4, liver: 1, sugar: 4 }, category: 'event', sprite: { atlas: 'enemies', x: 9, y: 4, w: 32, h: 32 } },
+  { id: 'enemy_051', name: '金曜ハイ', hp: 230, atk: 8, def: 4, xp: 108, gold: 160, drops: [{ itemId: 'item_011', rate: 0.1 }], healthDamage: { blood: 2, uric: 2, chol: 0, liver: 2, sugar: 0 }, category: 'event', sprite: { atlas: 'enemies', x: 0, y: 5, w: 32, h: 32 } },
+  { id: 'enemy_052', name: '休日出勤鬼', hp: 234, atk: 9, def: 5, xp: 110, gold: 163, drops: [{ itemId: 'item_012', rate: 0.2 }], healthDamage: { blood: 3, uric: 0, chol: 1, liver: 3, sugar: 1 }, category: 'event', sprite: { atlas: 'enemies', x: 1, y: 5, w: 32, h: 32 } },
+  { id: 'enemy_053', name: '健康アプリ影', hp: 238, atk: 10, def: 6, xp: 112, gold: 166, drops: [{ itemId: 'item_013', rate: 0.3 }], healthDamage: { blood: 0, uric: 1, chol: 2, liver: 0, sugar: 2 }, category: 'event', sprite: { atlas: 'enemies', x: 2, y: 5, w: 32, h: 32 } },
+  { id: 'enemy_054', name: '体重計スフィンクス', hp: 242, atk: 11, def: 7, xp: 114, gold: 169, drops: [{ itemId: 'item_014', rate: 0.4 }], healthDamage: { blood: 1, uric: 2, chol: 3, liver: 1, sugar: 3 }, category: 'event', sprite: { atlas: 'enemies', x: 3, y: 5, w: 32, h: 32 } },
+  { id: 'enemy_055', name: '保険証ナイト', hp: 246, atk: 12, def: 8, xp: 116, gold: 172, drops: [{ itemId: 'item_015', rate: 0.5 }], healthDamage: { blood: 2, uric: 0, chol: 4, liver: 2, sugar: 4 }, category: 'event', sprite: { atlas: 'enemies', x: 4, y: 5, w: 32, h: 32 } }
+]

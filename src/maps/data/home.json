@@ -1,0 +1,239 @@
+{
+  "id": "home",
+  "name": "自宅",
+  "width": 5,
+  "height": 5,
+  "tiles": [[1,1,1,1,1],[1,0,0,0,1],[1,0,2,0,1],[1,0,0,0,1],[1,1,1,1,1]],
+  "collisions": [[true,true,true,true,true],[true,false,false,false,true],[true,false,false,false,true],[true,false,false,false,true],[true,true,true,true,true]],
+  "npcs": [{ "id": "home_facility", "x": 2, "y": 2, "sprite": { "atlas": "facilities", "x": 0, "y": 0, "w": 32, "h": 32 } }],
+  "warps": [{ "x": 2, "y": 4, "targetMap": "town", "targetX": 10, "targetY": 10 }],
+  "encounterRate": 0,
+  "enemyPool": [],
+  "bgm": "home",
+  "facilityEventId": "home_facility"
+}
+  "width": 10,
+  "height": 8,
+  "tiles": [
+    [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    [
+      1,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      1
+    ],
+    [
+      1,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      1
+    ],
+    [
+      1,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      1
+    ],
+    [
+      1,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      1
+    ],
+    [
+      1,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      1
+    ],
+    [
+      1,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      6,
+      1
+    ],
+    [
+      1,
+      1,
+      1,
+      1,
+      1,
+      3,
+      1,
+      1,
+      1,
+      1
+    ]
+  ],
+  "collisions": [
+    [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true
+    ],
+    [
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      true,
+      true,
+      true,
+      true
+    ]
+  ],
+  "npcs": [
+    {
+      "id": "neighbor",
+      "x": 3,
+      "y": 3,
+      "sprite": {
+        "atlas": "npcs",
+        "x": 0,
+        "y": 0,
+        "w": 16,
+        "h": 16
+      }
+    }
+  ],
+  "warps": [
+    {
+      "x": 5,
+      "y": 7,
+      "targetMap": "yokocho",
+      "targetX": 2,
+      "targetY": 15
+    }
+  ],
+  "encounterRate": 0,
+  "enemyPool": [],
+  "bgm": "home_theme"
+}
