@@ -1,0 +1,43 @@
+import type { FoodDef } from '@/types'
+
+export const foods: FoodDef[] = [
+  {
+    id: 'grilled_ayu',
+    name: 'アユの塩焼き',
+    desc: '川魚を香ばしく焼いた料理。塩分は少し高いが良質なたんぱく質を得られる。',
+    category: 'food',
+    icon: '🍢',
+    effect: { hp: 18, health: { blood: 2, uric: 0.1, chol: -3, liver: -1, sugar: 0 }, calories: 180 },
+    price: 260,
+    stackable: true,
+    calories: 180,
+    nutrition: { protein: 22, fat: 6, carbs: 2, salt: 1.4 },
+    recipe: [{ itemId: 'fish:ayu', quantity: 1 }],
+  },
+  {
+    id: 'saba_miso',
+    name: 'サバ味噌',
+    desc: 'サバを味噌で煮込んだ定食のおかず。',
+    category: 'food',
+    icon: '🍲',
+    effect: { hp: 25, health: { blood: 3, uric: 0.2, chol: -4, liver: 1, sugar: 2 }, calories: 320 },
+    price: 420,
+    stackable: true,
+    calories: 320,
+    nutrition: { protein: 28, fat: 18, carbs: 12, salt: 2.1 },
+    recipe: [{ itemId: 'fish:saba', quantity: 1 }],
+  },
+  {
+    id: 'tai_sashimi',
+    name: 'タイの刺身',
+    desc: '新鮮なタイを使った贅沢な刺身。',
+    category: 'food',
+    icon: '🍣',
+    effect: { hp: 32, health: { blood: -1, uric: 0.2, chol: -5, liver: -2, sugar: 0 }, calories: 210 },
+    price: 720,
+    stackable: true,
+    calories: 210,
+    nutrition: { protein: 30, fat: 7, carbs: 3, salt: 0.9 },
+    recipe: [{ itemId: 'fish:tai', quantity: 1 }],
+  },
+]
