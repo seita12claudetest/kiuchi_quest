@@ -8,9 +8,6 @@ export default defineConfig({
   build: {
     target: 'es2020',
     outDir: 'dist',
-    assetsInlineLimit: 8192,
-    rollupOptions: {
-      output: { manualChunks: { data: ['src/data/enemies', 'src/data/items', 'src/data/events'] } }
-    }
+    assetsInlineLimit: 8192
   }
 })
