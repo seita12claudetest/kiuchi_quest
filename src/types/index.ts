@@ -10,6 +10,10 @@ export interface GameState {
   timeSlot: TimeSlot
   flags: Record<string, boolean>
   mode: GameMode
+  mealLog?: string[]
+  eventLog?: string[]
+  gymVisits?: number
+  lastSavedAt?: { day: number; timeSlot: TimeSlot; map: string }
 }
 
 export type GameMode = 'map' | 'battle' | 'event' | 'menu' | 'casino' | 'fishing' | 'title'
@@ -252,7 +256,7 @@ export interface EventDef {
   repeatable: boolean
 }
 
-export type EventType = 'story' | 'random' | 'weekday' | 'relation' | 'season' | 'health'
+export type EventType = 'story' | 'random' | 'weekday' | 'relation' | 'season' | 'health' | 'facility'
 
 export interface EventTrigger {
   type: 'tile' | 'talk' | 'time' | 'flag' | 'health' | 'auto'
@@ -291,6 +295,12 @@ export interface EventEffect {
   health?: Partial<HealthStats>
   relation?: Record<string, number>
   hp?: number
+  advanceTime?: number
+  rest?: boolean
+  cook?: { meal: string; belly: number }
+  save?: boolean
+  hospital?: boolean
+  gym?: { rewardEvery: number; power: number; sp: number }
 }
 
 export interface EventReward {
