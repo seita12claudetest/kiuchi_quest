@@ -64,6 +64,13 @@ Phase 1 (完了) ─┬─→ [A] Core基盤 ──────────→ [
 6. PR: 完了後 main へPR作成。タイトルに [Stream X] を付ける
 ```
 
+
+## 追加計画ドキュメント
+
+- `docs/roadmap.md` — 複数マップ、食料、敵、イベント、RPG要素、Pages/Tauri配布までの全体ロードマップ
+- `docs/assets.md` — ドット絵食料アイコン、UI、音、エフェクト素材の取得元・ライセンス管理ルール
+- `docs/ui-reference.md` — Game UI Database / Interface In Game などを参考にした画面別UI方針
+
 ## 素材リソース
 - UI参考: https://interfaceingame.com/
 - 音声素材: https://app.cinevva.com/guides/free-sound-effects-music
