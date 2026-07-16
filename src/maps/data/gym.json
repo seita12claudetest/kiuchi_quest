@@ -1,6 +1,17 @@
 {
   "id": "gym",
   "name": "ジム",
+  "width": 5,
+  "height": 5,
+  "tiles": [[1,1,1,1,1],[1,0,0,0,1],[1,0,4,0,1],[1,0,0,0,1],[1,1,1,1,1]],
+  "collisions": [[true,true,true,true,true],[true,false,false,false,true],[true,false,false,false,true],[true,false,false,false,true],[true,true,true,true,true]],
+  "npcs": [{ "id": "gym_training", "x": 2, "y": 2, "sprite": { "atlas": "facilities", "x": 0, "y": 0, "w": 32, "h": 32 } }],
+  "warps": [{ "x": 2, "y": 4, "targetMap": "town", "targetX": 14, "targetY": 10 }],
+  "encounterRate": 0,
+  "enemyPool": [],
+  "bgm": "gym",
+  "facilityEventId": "gym_training"
+}
   "width": 14,
   "height": 10,
   "tiles": [
