@@ -1,4 +1,5 @@
 export type InputKey = 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight' | 'Enter' | 'Escape'
+export type KeyState = 'up' | 'pressed' | 'held' | 'released'
 
 export interface InputSnapshot {
   up: boolean
@@ -9,71 +10,28 @@ export interface InputSnapshot {
   escape: boolean
 }
 
-const SUPPORTED_KEYS = new Set<InputKey>([
-  'ArrowUp',
-  'ArrowDown',
-  'ArrowLeft',
-  'ArrowRight',
-  'Enter',
-  'Escape'
-])
-
-export class InputManager {
-  private pressedKeys = new Set<InputKey>()
-  private readonly target: Pick<Window, 'addEventListener' | 'removeEventListener'>
-  private readonly onKeyDown = (event: KeyboardEvent): void => {
-    if (!this.isSupportedKey(event.key)) return
-    this.pressedKeys.add(event.key)
-    event.preventDefault()
-  }
-
-  private readonly onKeyUp = (event: KeyboardEvent): void => {
-    if (!this.isSupportedKey(event.key)) return
-    this.pressedKeys.delete(event.key)
-    event.preventDefault()
-  }
-
-  constructor(target: Pick<Window, 'addEventListener' | 'removeEventListener'> = window) {
-    this.target = target
-  }
-
-  attach(): void {
-    this.target.addEventListener('keydown', this.onKeyDown as EventListener)
-    this.target.addEventListener('keyup', this.onKeyUp as EventListener)
-  }
-
-  detach(): void {
-    this.target.removeEventListener('keydown', this.onKeyDown as EventListener)
-    this.target.removeEventListener('keyup', this.onKeyUp as EventListener)
-    this.pressedKeys.clear()
-  }
-
-  isPressed(key: InputKey): boolean {
-    return this.pressedKeys.has(key)
-  }
-
-  get snapshot(): InputSnapshot {
-    return {
-      up: this.isPressed('ArrowUp'),
-      down: this.isPressed('ArrowDown'),
-      left: this.isPressed('ArrowLeft'),
-      right: this.isPressed('ArrowRight'),
-      enter: this.isPressed('Enter'),
-      escape: this.isPressed('Escape')
-    }
-  }
-
-  private isSupportedKey(key: string): key is InputKey {
-    return SUPPORTED_KEYS.has(key as InputKey)
-export type KeyState = 'up' | 'pressed' | 'held' | 'released'
+const KEY_TO_SNAPSHOT: Record<InputKey, keyof InputSnapshot> = {
+  ArrowUp: 'up',
+  ArrowDown: 'down',
+  ArrowLeft: 'left',
+  ArrowRight: 'right',
+  Enter: 'enter',
+  Escape: 'escape'
+}
 
 export class InputManager {
   private states = new Map<string, KeyState>()
   private readonly target?: Pick<Window, 'addEventListener' | 'removeEventListener'>
-  private readonly onKeyDown = (event: KeyboardEvent): void => this.press(event.key)
-  private readonly onKeyUp = (event: KeyboardEvent): void => this.release(event.key)
+  private readonly onKeyDown = (event: KeyboardEvent): void => {
+    this.press(event.key)
+    if (event.key in KEY_TO_SNAPSHOT) event.preventDefault()
+  }
+  private readonly onKeyUp = (event: KeyboardEvent): void => {
+    this.release(event.key)
+    if (event.key in KEY_TO_SNAPSHOT) event.preventDefault()
+  }
 
-  constructor(target?: Pick<Window, 'addEventListener' | 'removeEventListener'>) {
+  constructor(target: Pick<Window, 'addEventListener' | 'removeEventListener'> = window) {
     this.target = target
   }
 
@@ -85,6 +43,7 @@ export class InputManager {
   detach(): void {
     this.target?.removeEventListener('keydown', this.onKeyDown as EventListener)
     this.target?.removeEventListener('keyup', this.onKeyUp as EventListener)
+    this.clear()
   }
 
   press(key: string): void {
@@ -108,6 +67,17 @@ export class InputManager {
 
   justReleased(key: string): boolean {
     return this.states.get(key) === 'released'
+  }
+
+  get snapshot(): InputSnapshot {
+    return {
+      up: this.isPressed('ArrowUp'),
+      down: this.isPressed('ArrowDown'),
+      left: this.isPressed('ArrowLeft'),
+      right: this.isPressed('ArrowRight'),
+      enter: this.isPressed('Enter'),
+      escape: this.isPressed('Escape')
+    }
   }
 
   endFrame(): void {
