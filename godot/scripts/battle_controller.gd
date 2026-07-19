@@ -19,12 +19,18 @@ var party_label: Label
 var intent_label: Label
 var log_label: Label
 var command_buttons: Array[Button] = []
+var battle_mode := "normal"
 
-func start() -> void:
+func start(mode := "normal") -> void:
+	battle_mode = mode
+	if battle_mode == "case":
+		enemy_hp = 150
+		enemy_max_hp = 150
+		focus = 55
 	layer = 50
 	_build_interface()
 	_update_display()
-	log_label.text = "積み上がった未処理伝票が、締め時刻への不安を増幅している。"
+	log_label.text = "四人が事実を持ち寄った。更新漏れ、締め時刻、部署間認識差を順に処理する。" if battle_mode == "case" else "積み上がった未処理伝票が、締め時刻への不安を増幅している。"
 
 func _build_interface() -> void:
 	var backdrop := TextureRect.new()
@@ -36,7 +42,8 @@ func _build_interface() -> void:
 
 	var title_panel := _panel(Rect2(18, 16, 924, 64), Color("#071923eF"), Color("#c6a461"), 3)
 	add_child(title_panel)
-	var title := _label(Rect2(18, 8, 620, 28), "案件｜月次売上集計の不一致", 21, Color("#f2d99a"))
+	var title_text := "案件戦｜月次売上集計の不一致" if battle_mode == "case" else "通常戦｜未処理伝票"
+	var title := _label(Rect2(18, 8, 620, 28), title_text, 21, Color("#f2d99a"))
 	title_panel.add_child(title)
 	intent_label = _label(Rect2(620, 9, 280, 44), "", 15, Color("#efc6a0"))
 	intent_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -114,7 +121,7 @@ func _choose_action(action: String) -> void:
 	var damage := 0
 	match action:
 		"organize":
-			damage = 12 + GameState.expertise / 10
+			damage = 12 + GameState.expertise / 10 + (4 if battle_mode == "case" else 0)
 			log_label.text = "木内は伝票を日付と商品コードで並べ替えた。処理の順序が見えてきた。"
 		"technique":
 			if focus >= 10:
@@ -125,14 +132,14 @@ func _choose_action(action: String) -> void:
 				log_label.text = "集中力が続かず、端末の入力位置を見失った。"
 		"network":
 			if GameState.has_flag("met_tanaka"):
-				damage = 16 + GameState.trust
+				damage = 16 + GameState.trust + (8 if battle_mode == "case" and GameState.has_flag("interviewed_accounting") else 0)
 				kiuchi_hp = mini(100, kiuchi_hp + 8)
 				log_label.text = "田中が営業側の事情を補足した。曖昧だった伝票の出所が絞られる。"
 			else:
 				log_label.text = "相談できる相手がまだいない。"
 		"negotiate":
 			if GameState.has_flag("checked_ledger"):
-				damage = 28
+				damage = 36 if battle_mode == "case" and GameState.has_flag("root_cause_found") else 28
 				log_label.text = "台帳との照合結果を根拠に、締め処理の順序変更を提案した。"
 			else:
 				damage = 5
@@ -177,12 +184,13 @@ func _finish(victory: bool) -> void:
 	else:
 		log_label.text = "情報が整理できないまま集中力が尽きた。死亡ではなく、残業と再調査が必要になる。"
 	await get_tree().create_timer(1.2).timeout
-	battle_finished.emit({"victory": victory, "remaining_hp": kiuchi_hp, "turns": turn})
+	battle_finished.emit({"victory": victory, "remaining_hp": kiuchi_hp, "turns": turn, "mode":battle_mode})
 	queue_free()
 
 func _update_display() -> void:
-	enemy_label.text = "未処理伝票\n処理残　%d / %d\n%s" % [enemy_hp, enemy_max_hp, _enemy_bar()]
-	party_label.text = "木内　体力 %d / 100　集中 %d / 40\n田中　%s" % [kiuchi_hp, focus, "同行中" if GameState.has_flag("met_tanaka") else "不在"]
+	var enemy_name := "締め処理までの認識差" if battle_mode == "case" else "未処理伝票"
+	enemy_label.text = "%s\n処理残　%d / %d\n%s" % [enemy_name, enemy_hp, enemy_max_hp, _enemy_bar()]
+	party_label.text = ("木内 %d　田中 営業　佐藤 電算　山川 経理\n集中 %d / 55　四者連携" % [kiuchi_hp, focus]) if battle_mode == "case" else ("木内　体力 %d / 100　集中 %d / 40\n田中　%s" % [kiuchi_hp, focus, "同行中" if GameState.has_flag("met_tanaka") else "不在"])
 	intent_label.text = "次の圧力｜%s" % ("締め時刻（強）" if turn % 3 == 0 else "差し戻し")
 
 func _enemy_bar() -> String:

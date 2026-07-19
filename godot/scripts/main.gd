@@ -30,6 +30,7 @@ var menu_active := false
 func _ready() -> void:
 	maps = _load_maps()
 	var debug_battle := false
+	var debug_case_battle := false
 	var debug_work_menu := false
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--map="):
@@ -38,11 +39,15 @@ func _ready() -> void:
 				current_map_id = requested_map
 		elif argument == "--battle":
 			debug_battle = true
+		elif argument == "--case-battle":
+			debug_case_battle = true
 		elif argument == "--work-menu":
 			debug_work_menu = true
 	change_map(current_map_id, "start")
 	_update_hud()
-	if debug_battle:
+	if debug_case_battle:
+		_start_battle("case")
+	elif debug_battle:
 		_start_battle()
 	elif debug_work_menu:
 		_start_work_menu()
@@ -94,13 +99,16 @@ func activate(action: Dictionary) -> void:
 		open_dialog(String(data.get("label", "")), String(data.get("blocked_text", "今はまだ必要な情報が足りない。")))
 		return
 	if String(data.get("action", "")) == "rest":
+		if GameState.minutes < 17 * 60 + 30:
+			open_dialog(String(data.get("label", "布団")), "まだ一日を終えるには早い。平日は会社の仕事を終え、夕方以降に休もう。")
+			return
 		GameState.end_day()
 		GameState.set_flag("first_day_complete")
 		open_dialog(String(data.get("label", "")), String(data.get("text", "翌朝になった。")))
 		_update_hud()
 		return
 	if String(data.get("action", "")) == "battle":
-		_start_battle()
+		_start_battle(String(data.get("battle_mode", "normal")))
 		return
 	if String(data.get("action", "")) == "work_plan":
 		_start_work_menu()
@@ -141,7 +149,7 @@ func _update_hud() -> void:
 	status_label.text = GameState.status_text()
 	objective_label.text = GameState.objective_text()
 
-func _start_battle() -> void:
+func _start_battle(mode := "normal") -> void:
 	if battle_active:
 		return
 	battle_active = true
@@ -149,7 +157,7 @@ func _start_battle() -> void:
 	var battle := BattleControllerClass.new()
 	battle.battle_finished.connect(_on_battle_finished)
 	add_child(battle)
-	battle.start()
+	battle.start(mode)
 
 func _start_work_menu() -> void:
 	if menu_active:
@@ -173,12 +181,20 @@ func _on_battle_finished(result: Dictionary) -> void:
 	battle_active = false
 	player.movement_enabled = true
 	if bool(result.get("victory", false)):
-		GameState.set_flag("first_battle_won")
-		GameState.expertise = mini(100, GameState.expertise + 4)
-		GameState.trust = mini(10, GameState.trust + 1)
-		GameState.career_performance += 8
-		GameState.politics += 1
-		show_toast("未処理伝票を整理した　専門性+4　信頼+1　実績+8")
+		if String(result.get("mode", "normal")) == "case":
+			GameState.set_flag("first_case_resolved")
+			GameState.expertise = mini(100, GameState.expertise + 7)
+			GameState.trust = mini(10, GameState.trust + 2)
+			GameState.career_performance += 15
+			GameState.politics += 2
+			show_toast("月次案件を解決した　実績+15　専門+7　信頼+2")
+		else:
+			GameState.set_flag("first_battle_won")
+			GameState.expertise = mini(100, GameState.expertise + 4)
+			GameState.trust = mini(10, GameState.trust + 1)
+			GameState.career_performance += 8
+			GameState.politics += 1
+			show_toast("未処理伝票を整理した　専門性+4　信頼+1　実績+8")
 	else:
 		GameState.energy = maxi(0, GameState.energy - 20)
 		GameState.advance_minutes(90)

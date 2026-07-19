@@ -149,7 +149,19 @@ func objective_text() -> String:
 		return "□ 帰宅して休もう"
 	if not has_flag("first_battle_won"):
 		return "火曜｜未処理伝票を整理する"
-	return "火曜｜経理側集計との差額を追う\n" + next_promotion_text()
+	if not has_flag("checked_accounting_summary"):
+		return "火曜｜経理側の集計表を確認する"
+	if not has_flag("checked_migration_table"):
+		return "火曜｜商品コード移行表を照合する"
+	if not has_flag("interviewed_accounting"):
+		return "火曜｜経理担当から締め手順を聞く"
+	if not has_flag("root_cause_found"):
+		return "木曜｜三つの証拠を佐藤先輩へ報告"
+	if not has_flag("case_ready"):
+		return "木曜｜田中と佐藤の作戦をまとめる"
+	if not has_flag("first_case_resolved"):
+		return "金曜｜月次売上集計の不一致を解決する"
+	return "初案件解決｜次の勤務と街の交流へ\n" + next_promotion_text()
 
 func save_game() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
