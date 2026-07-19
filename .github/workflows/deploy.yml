@@ -35,6 +35,14 @@ jobs:
           presets_to_export: "Web"
           cache: true
 
+      - name: Upload build for manual review
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build-preview
+          path: ${{ steps.export.outputs.build_directory }}/Web
+          retention-days: 7
+
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
