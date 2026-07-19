@@ -1,0 +1,138 @@
+{
+  "office_front": {
+    "display_name": "東都商事 本社前", "size": [960, 540], "ground": "#5f7260", "background": "res://assets/backgrounds/office-front-v2.png", "default_spawn": [480, 410],
+    "spawns": [{"id":"start","position":[480,410]},{"id":"from_station","position":[110,270]},{"id":"from_office","position":[480,335]}],
+    "roads": [{"position":[480,430],"size":[960,150],"color":"#6d6b64"},{"position":[160,270],"size":[320,90],"color":"#908772"}],
+    "buildings": [{"position":[480,205],"size":[430,230],"label":"東都商事","color":"#7b6657"}],
+    "walls": [{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "portals": [
+      {"id":"office_front_to_inside","position":[480,325],"label":"東都商事へ入る","to_map":"office_inside","to_spawn":"from_front"},
+      {"id":"office_front_to_station","position":[55,270],"label":"駅前へ向かう","to_map":"station","to_spawn":"from_office"}
+    ],
+    "interactions": [
+      {"id":"tanaka_front","position":[720,390],"label":"田中同僚","verb":"話す","time_cost":10,"repeat_policy":"once","effects":{"trust":1,"flags":["met_tanaka"]},"text":"田中「木内、来たな。まず受付に顔を出そう。緊張するのは全員同じだ」"},
+      {"id":"office_sign","position":[650,320],"label":"社名板","verb":"調べる","text":"東都商事株式会社。真新しい金文字が朝日に光っている。"},
+      {"id":"vending_machine","position":[190,355],"label":"赤い自動販売機","verb":"調べる","text":"缶コーヒーは百円。初出社の日には、まだ少し苦そうに見える。"}
+    ]
+  },
+  "office_inside": {
+    "display_name": "東都商事 営業部", "size": [960,540], "ground":"#b8a77e", "background":"res://assets/backgrounds/office-inside-v1.png", "default_spawn":[480,460],
+    "spawns":[{"id":"from_front","position":[480,450]}],
+    "roads":[{"position":[480,270],"size":[760,360],"color":"#c8b990"}],
+    "buildings":[{"position":[270,205],"size":[210,100],"label":"営業一課","color":"#73513d"},{"position":[690,205],"size":[210,100],"label":"電算端末","color":"#3d514b"}],
+    "walls":[
+      {"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},
+      {"position":[220,285],"size":[300,245]},{"position":[745,285],"size":[330,245]},
+      {"position":[475,120],"size":[175,95]},{"position":[760,110],"size":[270,90]},{"position":[115,115],"size":[190,120]}
+    ],
+    "portals":[{"id":"office_inside_to_front","position":[480,495],"label":"会社前へ出る","to_map":"office_front","to_spawn":"from_office"}],
+    "interactions":[
+      {"id":"tanaka","position":[405,330],"label":"田中同僚","verb":"話す","time_cost":10,"repeat_policy":"once","effects":{"trust":1,"flags":["met_tanaka"]},"text":"田中「木内、今日の伝票はここだ。焦らなくていい。分からなければ、分からないと早めに言えよ」"},
+      {"id":"sato","position":[555,295],"label":"佐藤先輩","verb":"話す","time_cost":15,"repeat_policy":"once","requires_flags":["met_tanaka"],"blocked_text":"佐藤先輩は資料を読んでいる。まず田中さんへ挨拶しよう。","effects":{"expertise":2,"flags":["received_first_job"]},"text":"佐藤「AS/400は便利だが、入力する元の数字までは直してくれない。まず商品コードを照合してみろ」"},
+      {"id":"terminal","position":[770,165],"label":"5250端末","verb":"調べる","time_cost":30,"repeat_policy":"once","requires_flags":["received_first_job"],"blocked_text":"端末は空いているが、勝手に操作してはいけない。担当者の指示を待とう。","effects":{"energy":-5,"expertise":3,"performance":2,"flags":["checked_terminal"]},"text":"黒い画面に緑色の文字。旧コードと新コードの対応表に、一件だけ更新日の古い行がある。"},
+      {"id":"sales_ledger","position":[365,230],"label":"月次売上台帳","verb":"照合する","time_cost":45,"repeat_policy":"once","requires_flags":["checked_terminal"],"blocked_text":"分厚い台帳だ。先に端末側の商品コードを確認した方がよさそうだ。","effects":{"energy":-8,"expertise":3,"trust":1,"performance":4,"flags":["checked_ledger"]},"text":"伝票を一枚ずつ照合すると、集計差額と同じ金額の商品が見つかった。偶然ではなさそうだ。"},
+      {"id":"unprocessed_slips","position":[590,225],"label":"未処理伝票の束","verb":"整理する","action":"battle","requires_flags":["first_day_complete"],"blocked_text":"初日に任された確認を終えてから取り掛かろう。","text":"未処理伝票を前にすると、木内の意識が心象世界へ沈んでいく。"},
+      {"id":"weekly_planner","position":[680,345],"label":"週間予定表","verb":"仕事を選ぶ","action":"work_plan","requires_flags":["first_day_reported"],"blocked_text":"まず初日に任された仕事を報告しよう。","text":"今日の仕事の配分を決める。"},
+      {"id":"accounting_summary","position":[295,335],"label":"経理側集計表","verb":"確認する","time_cost":30,"repeat_policy":"once","requires_flags":["first_battle_won"],"blocked_text":"未処理伝票を整理して、比較できる状態にしよう。","effects":{"energy":-5,"expertise":2,"performance":3,"flags":["checked_accounting_summary"]},"text":"営業側より経理側の締めが一日早い。同じ商品でも、締め日により新旧二つのコードで計上されている。"},
+      {"id":"migration_table","position":[835,250],"label":"商品コード移行表","verb":"照合する","time_cost":45,"repeat_policy":"once","requires_flags":["first_battle_won"],"blocked_text":"まず未処理伝票の発生元を切り分けよう。","effects":{"energy":-7,"expertise":4,"performance":4,"flags":["checked_migration_table"]},"text":"移行表の一行だけ、4月1日の更新対象から漏れている。AS/400そのものではなく、移行前に決めた運用の穴だ。"},
+      {"id":"accounting_staff","position":[620,340],"label":"経理の山川さん","verb":"話す","time_cost":20,"repeat_policy":"once","requires_flags":["first_battle_won"],"blocked_text":"今は締め処理で手が離せないようだ。","effects":{"trust":1,"politics":1,"flags":["interviewed_accounting"]},"text":"山川「こちらは前日分を朝一番で締めます。営業さんが夕方に直したコードは、翌日まで来ないんです」"},
+      {"id":"root_cause_report","position":[555,255],"label":"佐藤先輩への中間報告","verb":"報告する","time_cost":30,"repeat_policy":"once","requires_flags":["checked_accounting_summary","checked_migration_table","interviewed_accounting"],"blocked_text":"集計表・移行表・経理の締め手順。三方向の事実を揃えてから報告しよう。","effects":{"trust":1,"expertise":3,"performance":7,"flags":["root_cause_found"]},"text":"佐藤「機械の故障じゃない。更新漏れと部署ごとの締め時刻の差だ。そこまで分けて話せれば、直し方を選べる」"},
+      {"id":"case_strategy","position":[735,335],"label":"案件作戦会議","verb":"参加する","time_cost":45,"repeat_policy":"once","requires_flags":["root_cause_found"],"blocked_text":"原因の証拠を揃え、佐藤先輩へ中間報告しよう。","effects":{"energy":-5,"trust":1,"politics":2,"performance":5,"flags":["case_ready"]},"text":"田中は顧客への影響を、佐藤は移行表の修正を優先した。木内は双方を工程表に並べ、同時に進められる順序を提案した。"},
+      {"id":"monthly_case","position":[470,275],"label":"月次売上集計の不一致","verb":"案件を解決する","action":"battle","battle_mode":"case","requires_flags":["case_ready"],"blocked_text":"原因を特定し、関係者と作戦をまとめてから臨もう。","text":"営業・経理・電算の四人が資料を持ち寄る。問題を誰かのせいにせず、締め処理までに解決する。"},
+      {"id":"time_clock","position":[535,445],"label":"タイムレコーダー","verb":"調べる","time_cost":2,"text":"厚いタイムカードが部署ごとに並ぶ。定時は17時30分だが、まだ誰も帰る気配がない。"}
+    ]
+  },
+  "station": {
+    "display_name":"木ノ下駅前", "size":[960,540], "ground":"#6e765b", "background":"res://assets/backgrounds/station-v1.png", "default_spawn":[480,330],
+    "spawns":[{"id":"from_office","position":[790,270]},{"id":"from_home","position":[480,460]},{"id":"from_yokocho","position":[170,270]}],
+    "roads":[{"position":[480,270],"size":[960,110],"color":"#77736b"},{"position":[480,405],"size":[110,270],"color":"#8c806d"}],
+    "buildings":[{"position":[480,100],"size":[330,145],"label":"木ノ下駅","color":"#6b554c"}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[480,142],"size":[570,150]},{"position":[180,397],"size":[315,105]},{"position":[760,408],"size":[300,120]},{"position":[561,275],"size":[70,105]}],
+    "portals":[
+      {"id":"station_to_office","position":[900,270],"label":"会社前へ","to_map":"office_front","to_spawn":"from_station"},
+      {"id":"station_to_yokocho","position":[60,270],"label":"昭和横丁へ","to_map":"yokocho","to_spawn":"from_station"},
+      {"id":"station_to_home","position":[480,495],"label":"住宅街へ","to_map":"home","to_spawn":"from_station"}
+    ],
+    "interactions":[
+      {"id":"station_board","position":[395,222],"label":"駅の時刻表","verb":"調べる","time_cost":3,"text":"国鉄から民営化されて一年。制服も看板も新しくなったが、いつもの通勤客は同じ時間に集まる。"},
+      {"id":"station_clock","position":[560,232],"label":"駅前時計","verb":"見る","time_cost":1,"text":"待ち合わせの基準になる大時計。会社へ急ぐなら、あと二十分は余裕がある。"},
+      {"id":"station_kiosk","position":[685,218],"label":"駅売店","verb":"見る","time_cost":3,"text":"新聞、週刊誌、煙草、ガム。見出しには地価高騰と円高の文字が躍っている。"},
+      {"id":"station_phone","position":[625,285],"label":"公衆電話","verb":"調べる","time_cost":2,"text":"赤と緑の公衆電話。外回りの社員が小銭を握って連絡を入れている。"},
+      {"id":"bicycle_parking","position":[275,365],"label":"駐輪場","verb":"見る","time_cost":2,"text":"通勤用の自転車がぎっしり並ぶ。駅前の放置自転車は、この頃すでに街の悩みだった。"}
+    ]
+  },
+  "home": {
+    "display_name":"木内の自宅", "size":[960,540], "ground":"#9c896b", "background":"res://assets/backgrounds/home-v1.png", "default_spawn":[505,450],
+    "spawns":[{"id":"from_station","position":[505,450]}],
+    "roads":[{"position":[480,280],"size":[650,350],"color":"#b4a17f"}],
+    "buildings":[{"position":[300,220],"size":[210,110],"label":"居間","color":"#79533d"},{"position":[650,220],"size":[190,110],"label":"台所","color":"#6f5d48"}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[190,190],"size":[365,135]},{"position":[220,340],"size":[250,125]},{"position":[720,190],"size":[255,150]},{"position":[790,355],"size":[290,155]},{"position":[590,325],"size":[90,135]}],
+    "portals":[{"id":"home_to_station","position":[505,495],"label":"駅へ向かう","to_map":"station","to_spawn":"from_home"}],
+    "interactions":[
+      {"id":"mother","position":[385,355],"label":"木内の母","verb":"話す","text":"母「初日から無理しなくていいのよ。朝ごはんは食べなさい」"},
+      {"id":"newspaper","position":[285,315],"label":"朝刊","verb":"読む","time_cost":15,"repeat_policy":"once","effects":{"expertise":1},"text":"円高、土地価格、コンピュータ化。難しい言葉が紙面に並んでいる。"},
+      {"id":"home_tv","position":[135,275],"label":"テレビ","verb":"見る","time_cost":15,"effects":{"energy":2},"text":"ニュースの後は野球中継。街の話題と会社の話題が、食卓でゆっくり混ざっていく。"},
+      {"id":"home_phone","position":[590,295],"label":"黒電話","verb":"調べる","time_cost":2,"text":"電話帳の横に、会社と横丁の番号が鉛筆で書かれている。連絡は家族全員に聞こえる場所でする時代だ。"},
+      {"id":"breakfast","position":[785,420],"label":"朝食","verb":"食べる","time_cost":20,"repeat_policy":"once","effects":{"energy":12,"health":2},"text":"炊きたてのご飯、味噌汁、焼き魚。急ぐ朝ほど、食べたかどうかが午後に響く。"},
+      {"id":"home_calendar","position":[340,235],"label":"家の予定表","verb":"見る","time_cost":2,"text":"給料日、町内会、プロ野球の日程。会社だけでは一か月はできていない。"},
+      {"id":"bed","position":[735,245],"label":"木内の布団","verb":"休む","action":"rest","requires_flags":["first_day_reported"],"blocked_text":"まだ初日の仕事が終わっていない。先に会社へ向かおう。","text":"慣れない一日を終え、木内は深く眠った。翌朝、月次売上の差額が見つかる。"}
+    ]
+  },
+  "yokocho": {
+    "display_name":"昭和横丁", "size":[1200,675], "ground":"#2f2730", "background":"res://assets/backgrounds/yokocho-v1.png", "default_spawn":[1080,555],
+    "spawns":[{"id":"from_station","position":[1080,555]},{"id":"from_tanuki","position":[170,465]},{"id":"from_santa","position":[380,465]},{"id":"from_matsu","position":[590,465]},{"id":"from_coffee","position":[800,465]},{"id":"from_snack","position":[1010,465]}],
+    "roads":[{"position":[600,470],"size":[1120,180],"color":"#4b4242"}],
+    "buildings":[
+      {"position":[170,210],"size":[180,220],"label":"大衆酒場 たぬき","color":"#733d2f"},
+      {"position":[380,210],"size":[180,220],"label":"中華そば 三太","color":"#7c4434"},
+      {"position":[590,210],"size":[180,220],"label":"寿司処 まつ","color":"#3f5960"},
+      {"position":[800,210],"size":[180,220],"label":"純喫茶 珈琲苑","color":"#604234"},
+      {"position":[1010,210],"size":[180,220],"label":"スナック 夜汽車","color":"#543651"}
+    ],
+    "walls":[{"position":[600,5],"size":[1200,10]},{"position":[600,670],"size":[1200,10]},{"position":[5,337],"size":[10,675]},{"position":[1195,337],"size":[10,675]},{"position":[600,205],"size":[1200,390]}],
+    "portals":[
+      {"id":"yokocho_to_station","position":[1135,570],"label":"駅前へ戻る","to_map":"station","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_tanuki","position":[170,420],"label":"大衆酒場 たぬき","to_map":"tanuki","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_santa","position":[380,420],"label":"中華そば 三太","to_map":"santa","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_matsu","position":[590,420],"label":"寿司処 まつ","to_map":"matsu","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_coffee","position":[800,420],"label":"純喫茶 珈琲苑","to_map":"coffee","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_snack","position":[1010,420],"label":"スナック 夜汽車","to_map":"snack","to_spawn":"from_yokocho"}
+    ],
+    "interactions":[{"id":"public_phone","position":[115,515],"label":"赤い公衆電話","verb":"調べる","time_cost":5,"text":"受話器は重く、十円玉を何枚も飲み込みそうだ。"},{"id":"yokocho_memory","position":[610,525],"label":"濡れた石畳","verb":"調べる","time_cost":5,"effects":{"flags":["found_yokocho_memory"]},"text":"雨上がりの石畳に五軒の灯りが映る。会社とは違う時間が、ここには流れている。"}]
+  },
+  "tanuki": {
+    "display_name":"大衆酒場 たぬき", "size":[960,540], "ground":"#5e382b", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
+    "roads":[{"position":[480,270],"size":[700,370],"color":"#79503a"}], "buildings":[{"position":[480,180],"size":[520,90],"label":"カウンター","color":"#3e271d"}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "portals":[{"id":"tanuki_to_yokocho","position":[480,500],"label":"横丁へ出る","to_map":"yokocho","to_spawn":"from_tanuki"}],
+    "interactions":[{"id":"tanuki_owner","position":[480,245],"label":"大将","verb":"話す","text":"大将「新顔だな。無理に飲まなくていい、腹に何か入れていけ」"},{"id":"tanuki_menu","position":[650,180],"label":"品書き","verb":"読む","text":"煮込み、冷奴、焼き鳥。鉛筆で値段が直されている。"},{"id":"tanuki_photo","position":[280,150],"label":"壁の写真","verb":"調べる","text":"開店当時の白黒写真。今より道幅が狭い。"}]
+  },
+  "santa": {
+    "display_name":"中華そば 三太", "size":[960,540], "ground":"#674132", "background":"res://assets/backgrounds/santa-v1.png", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
+    "roads":[{"position":[480,270],"size":[700,370],"color":"#8e6242"}], "buildings":[{"position":[480,180],"size":[500,90],"label":"厨房","color":"#5a3328"}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[480,150],"size":[600,210]},{"position":[150,350],"size":[200,155]},{"position":[815,350],"size":[210,155]}],
+    "portals":[{"id":"santa_to_yokocho","position":[480,500],"label":"横丁へ出る","to_map":"yokocho","to_spawn":"from_santa"}],
+    "interactions":[{"id":"santa_owner","position":[480,245],"label":"三太","verb":"話す","time_cost":5,"repeat_policy":"once","effects":{"relationships":{"santa":1}},"text":"三太「醤油か味噌。悩むほどのことじゃない、今日はどっちだ」"},{"id":"santa_ramen","position":[220,330],"label":"醤油中華そば","verb":"注文する 420円","cost":420,"time_cost":25,"repeat_policy":"once","effects":{"money":-420,"energy":18,"health":-1,"relationships":{"santa":1},"flags":["ate_santa_ramen"]},"text":"鶏ガラの澄んだ醤油味と縮れ麺。早くて温かい昼食が、午後の仕事へ木内を戻してくれる。"},{"id":"santa_noodle","position":[780,250],"label":"製麺箱","verb":"調べる","text":"木箱に縮れ麺が整然と並んでいる。毎朝届く数で、その日の客足を読んでいる。"},{"id":"santa_radio","position":[155,215],"label":"ラジオ","verb":"聞く","time_cost":5,"text":"プロ野球中継が小さく流れている。常連は音だけで試合の流れを追う。"}]
+  },
+  "matsu": {
+    "display_name":"寿司処 まつ", "size":[960,540], "ground":"#46595a", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
+    "roads":[{"position":[480,270],"size":[700,370],"color":"#78908a"}], "buildings":[{"position":[480,180],"size":[500,90],"label":"檜のカウンター","color":"#6c563e"}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "portals":[{"id":"matsu_to_yokocho","position":[480,500],"label":"横丁へ出る","to_map":"yokocho","to_spawn":"from_matsu"}],
+    "interactions":[{"id":"matsu_owner","position":[480,245],"label":"松岡親方","verb":"話す","text":"親方「給料日前なら、巻物と汁でいい。見栄を張る店じゃない」"},{"id":"matsu_case","position":[650,220],"label":"魚のケース","verb":"調べる","text":"鯵、烏賊、赤身。札に産地が書かれている。"},{"id":"matsu_calendar","position":[280,150],"label":"市場の暦","verb":"調べる","text":"休市日が赤鉛筆で囲まれている。"}]
+  },
+  "coffee": {
+    "display_name":"純喫茶 珈琲苑", "size":[960,540], "ground":"#594537", "background":"res://assets/backgrounds/coffee-v1.png", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
+    "roads":[{"position":[480,270],"size":[700,370],"color":"#77604b"}], "buildings":[{"position":[480,180],"size":[500,90],"label":"珈琲カウンター","color":"#392a24"}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[480,155],"size":[450,205]},{"position":[185,300],"size":[220,145]},{"position":[175,430],"size":[220,110]},{"position":[790,300],"size":[220,145]},{"position":[790,430],"size":[220,110]},{"position":[600,270],"size":[115,110]}],
+    "portals":[{"id":"coffee_to_yokocho","position":[480,500],"label":"横丁へ出る","to_map":"yokocho","to_spawn":"from_coffee"}],
+    "interactions":[{"id":"coffee_owner","position":[480,245],"label":"苑子","verb":"話す","time_cost":5,"repeat_policy":"once","effects":{"relationships":{"sonoko":1}},"text":"苑子「会社の人は、答えを決めてから相談に来るのね。ここでは急いで結論を出さなくてもいいのよ」"},{"id":"coffee_blend","position":[350,275],"label":"ブレンド珈琲","verb":"注文する 350円","cost":350,"time_cost":30,"repeat_policy":"once","effects":{"money":-350,"energy":10,"health":1,"relationships":{"sonoko":1},"flags":["drank_coffee_blend"]},"text":"少し苦い深煎りを、苑子が厚いカップで出した。急ぐためではなく考えるために飲む珈琲だ。"},{"id":"coffee_newspaper","position":[610,280],"label":"新聞棚","verb":"読む","time_cost":10,"repeat_policy":"once","effects":{"expertise":1,"flags":["read_kissa_newspaper"]},"text":"経済紙、スポーツ紙、夕刊。地価高騰の記事の隣に、地域商店の閉店を伝える小さな記事がある。"},{"id":"coffee_phone","position":[575,180],"label":"ピンク電話","verb":"調べる","text":"カウンター横の電話。外回りの営業が伝言を頼み、十円玉を積んでいく。"},{"id":"coffee_record","position":[835,155],"label":"レコードプレーヤー","verb":"聴く","time_cost":5,"repeat_policy":"once","effects":{"energy":2},"text":"針を落とす小さな音の後、店の時間が会社よりゆっくり流れ始める。"}]
+  },
+  "snack": {
+    "display_name":"スナック 夜汽車", "size":[960,540], "ground":"#4d3149", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
+    "roads":[{"position":[480,270],"size":[700,370],"color":"#69455f"}], "buildings":[{"position":[480,180],"size":[500,90],"label":"カウンター","color":"#30222f"}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "portals":[{"id":"snack_to_yokocho","position":[480,500],"label":"横丁へ出る","to_map":"yokocho","to_spawn":"from_snack"}],
+    "interactions":[{"id":"snack_mama","position":[480,245],"label":"美香ママ","verb":"話す","text":"美香「会社じゃ言えないことほど、歌の間にぽろっと出るものよ」"},{"id":"snack_karaoke","position":[650,220],"label":"8トラックカラオケ","verb":"調べる","text":"分厚い曲目本に、よく歌われる番号の折り目がある。"},{"id":"snack_cards","position":[290,180],"label":"名刺入れ","verb":"調べる","text":"常連客の名刺が会社別に並んでいる。"}]
+  }
+}
