@@ -58,8 +58,8 @@
     "interactions":[{"id":"mother","position":[320,340],"label":"木内の母","verb":"話す","text":"母「初日から無理しなくていいのよ。朝ごはんは食べなさい」"},{"id":"newspaper","position":[610,320],"label":"朝刊","verb":"読む","time_cost":15,"effects":{"expertise":1},"text":"円高、土地価格、コンピュータ化。難しい言葉が紙面に並んでいる。"},{"id":"bed","position":[730,360],"label":"木内の布団","verb":"休む","action":"rest","requires_flags":["first_day_reported"],"blocked_text":"まだ初日の仕事が終わっていない。先に会社へ向かおう。","text":"慣れない一日を終え、木内は深く眠った。翌朝、月次売上の差額が見つかる。"}]
   },
   "yokocho": {
-    "display_name":"昭和横丁", "size":[1200,620], "ground":"#2f2730", "default_spawn":[1080,520],
-    "spawns":[{"id":"from_station","position":[1080,500]},{"id":"from_tanuki","position":[170,350]},{"id":"from_santa","position":[380,350]},{"id":"from_matsu","position":[590,350]},{"id":"from_coffee","position":[800,350]},{"id":"from_snack","position":[1010,350]}],
+    "display_name":"昭和横丁", "size":[1200,675], "ground":"#2f2730", "background":"res://assets/backgrounds/yokocho-v1.png", "default_spawn":[1080,555],
+    "spawns":[{"id":"from_station","position":[1080,555]},{"id":"from_tanuki","position":[170,465]},{"id":"from_santa","position":[380,465]},{"id":"from_matsu","position":[590,465]},{"id":"from_coffee","position":[800,465]},{"id":"from_snack","position":[1010,465]}],
     "roads":[{"position":[600,470],"size":[1120,180],"color":"#4b4242"}],
     "buildings":[
       {"position":[170,210],"size":[180,220],"label":"大衆酒場 たぬき","color":"#733d2f"},
@@ -68,16 +68,16 @@
       {"position":[800,210],"size":[180,220],"label":"純喫茶 珈琲苑","color":"#604234"},
       {"position":[1010,210],"size":[180,220],"label":"スナック 夜汽車","color":"#543651"}
     ],
-    "walls":[{"position":[600,5],"size":[1200,10]},{"position":[600,615],"size":[1200,10]},{"position":[5,310],"size":[10,620]},{"position":[1195,310],"size":[10,620]}],
+    "walls":[{"position":[600,5],"size":[1200,10]},{"position":[600,670],"size":[1200,10]},{"position":[5,337],"size":[10,675]},{"position":[1195,337],"size":[10,675]},{"position":[600,205],"size":[1200,390]}],
     "portals":[
-      {"id":"yokocho_to_station","position":[1135,520],"label":"駅前へ戻る","to_map":"station","to_spawn":"from_yokocho"},
-      {"id":"yokocho_to_tanuki","position":[170,330],"label":"大衆酒場 たぬき","to_map":"tanuki","to_spawn":"from_yokocho"},
-      {"id":"yokocho_to_santa","position":[380,330],"label":"中華そば 三太","to_map":"santa","to_spawn":"from_yokocho"},
-      {"id":"yokocho_to_matsu","position":[590,330],"label":"寿司処 まつ","to_map":"matsu","to_spawn":"from_yokocho"},
-      {"id":"yokocho_to_coffee","position":[800,330],"label":"純喫茶 珈琲苑","to_map":"coffee","to_spawn":"from_yokocho"},
-      {"id":"yokocho_to_snack","position":[1010,330],"label":"スナック 夜汽車","to_map":"snack","to_spawn":"from_yokocho"}
+      {"id":"yokocho_to_station","position":[1135,570],"label":"駅前へ戻る","to_map":"station","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_tanuki","position":[170,420],"label":"大衆酒場 たぬき","to_map":"tanuki","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_santa","position":[380,420],"label":"中華そば 三太","to_map":"santa","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_matsu","position":[590,420],"label":"寿司処 まつ","to_map":"matsu","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_coffee","position":[800,420],"label":"純喫茶 珈琲苑","to_map":"coffee","to_spawn":"from_yokocho"},
+      {"id":"yokocho_to_snack","position":[1010,420],"label":"スナック 夜汽車","to_map":"snack","to_spawn":"from_yokocho"}
     ],
-    "interactions":[{"id":"public_phone","position":[70,420],"label":"赤い公衆電話","verb":"調べる","text":"受話器は重く、十円玉を何枚も飲み込みそうだ。"}]
+    "interactions":[{"id":"public_phone","position":[115,515],"label":"赤い公衆電話","verb":"調べる","time_cost":5,"text":"受話器は重く、十円玉を何枚も飲み込みそうだ。"},{"id":"yokocho_memory","position":[610,525],"label":"濡れた石畳","verb":"調べる","time_cost":5,"effects":{"flags":["found_yokocho_memory"]},"text":"雨上がりの石畳に五軒の灯りが映る。会社とは違う時間が、ここには流れている。"}]
   },
   "tanuki": {
     "display_name":"大衆酒場 たぬき", "size":[960,540], "ground":"#5e382b", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
