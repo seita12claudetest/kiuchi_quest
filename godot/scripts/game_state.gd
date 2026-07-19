@@ -87,7 +87,9 @@ func objective_text() -> String:
 		return "□ 調査結果を田中さんへ報告"
 	if not has_flag("first_day_complete"):
 		return "□ 帰宅して休もう"
-	return "火曜｜月次売上の差額を調査する"
+	if not has_flag("first_battle_won"):
+		return "火曜｜未処理伝票を整理する"
+	return "火曜｜経理側集計との差額を追う"
 
 func save_game() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)

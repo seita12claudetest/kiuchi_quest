@@ -2,6 +2,7 @@ extends Node2D
 
 const MAPS_PATH := "res://data/maps.json"
 const WorldMapClass := preload("res://scripts/world_map.gd")
+const BattleControllerClass := preload("res://scripts/battle_controller.gd")
 
 @onready var world_root: Node2D = $WorldRoot
 @onready var player: KiuchiPlayer = $Player
@@ -22,16 +23,22 @@ var current_map_id := "office_front"
 var current_action: Dictionary = {}
 var toast_timer := 0.0
 var dialog_open := false
+var battle_active := false
 
 func _ready() -> void:
 	maps = _load_maps()
+	var debug_battle := false
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--map="):
 			var requested_map := argument.trim_prefix("--map=")
 			if maps.has(requested_map):
 				current_map_id = requested_map
+		elif argument == "--battle":
+			debug_battle = true
 	change_map(current_map_id, "start")
 	_update_hud()
+	if debug_battle:
+		_start_battle()
 
 func _process(delta: float) -> void:
 	if toast_timer > 0.0:
@@ -82,6 +89,9 @@ func activate(action: Dictionary) -> void:
 		open_dialog(String(data.get("label", "")), String(data.get("text", "翌朝になった。")))
 		_update_hud()
 		return
+	if String(data.get("action", "")) == "battle":
+		_start_battle()
+		return
 	if String(data.get("id", "")) in ["tanaka", "tanaka_front"] and GameState.has_flag("checked_ledger"):
 		GameState.set_flag("first_day_reported")
 	open_dialog(String(data.get("label", "")), String(data.get("text", "何もない。")))
@@ -116,6 +126,31 @@ func close_dialog() -> void:
 func _update_hud() -> void:
 	status_label.text = GameState.status_text()
 	objective_label.text = GameState.objective_text()
+
+func _start_battle() -> void:
+	if battle_active:
+		return
+	battle_active = true
+	player.movement_enabled = false
+	var battle := BattleControllerClass.new()
+	battle.battle_finished.connect(_on_battle_finished)
+	add_child(battle)
+	battle.start()
+
+func _on_battle_finished(result: Dictionary) -> void:
+	battle_active = false
+	player.movement_enabled = true
+	if bool(result.get("victory", false)):
+		GameState.set_flag("first_battle_won")
+		GameState.expertise = mini(100, GameState.expertise + 4)
+		GameState.trust = mini(10, GameState.trust + 1)
+		show_toast("未処理伝票を整理した　専門性+4　信頼+1")
+	else:
+		GameState.energy = maxi(0, GameState.energy - 20)
+		GameState.advance_minutes(90)
+		show_toast("再調査が必要だ　90分経過")
+	GameState.save_game()
+	_update_hud()
 
 func _load_maps() -> Dictionary:
 	var file := FileAccess.open(MAPS_PATH, FileAccess.READ)
