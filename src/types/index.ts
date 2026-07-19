@@ -14,6 +14,26 @@ export interface GameState {
   eventLog?: string[]
   gymVisits?: number
   lastSavedAt?: { day: number; timeSlot: TimeSlot; map: string }
+  career?: CareerState
+  relations?: Record<string, number>
+  questProgress?: Record<string, QuestProgress>
+  workDays?: number
+}
+
+export type CareerRank = 'new_hire' | 'staff' | 'senior' | 'chief' | 'assistant_manager' | 'manager' | 'deputy_manager'
+
+export interface CareerState {
+  rank: CareerRank
+  rankName: string
+  performance: number
+  trust: number
+  expertise: number
+  politics: number
+  stress: number
+  age: number
+  year: number
+  calendarMonth: number
+  monthsAtRank: number
 }
 
 export type GameMode = 'map' | 'battle' | 'event' | 'menu' | 'casino' | 'fishing' | 'title'
@@ -204,6 +224,7 @@ export interface MapDef {
   encounterRate: number       // 0-1
   enemyPool: string[]         // 敵ID
   bgm?: string
+  facilityEventId?: string
 }
 
 export interface MapNPC {

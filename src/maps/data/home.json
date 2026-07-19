@@ -89,5 +89,6 @@
   ],
   "encounterRate": 0,
   "enemyPool": [],
-  "bgm": "home"
+  "bgm": "home",
+  "facilityEventId": "home_facility"
 }

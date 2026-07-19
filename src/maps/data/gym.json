@@ -89,5 +89,6 @@
   ],
   "encounterRate": 0,
   "enemyPool": [],
-  "bgm": "gym"
+  "bgm": "gym",
+  "facilityEventId": "gym_training"
 }
