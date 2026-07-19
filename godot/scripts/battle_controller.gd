@@ -7,12 +7,18 @@ const BACKGROUND := preload("res://assets/battle/unprocessed-slips-v1.png")
 const KIUCHI := preload("res://assets/characters/kiuchi-directions-v2.png")
 const TANAKA := preload("res://assets/characters/tanaka-front-v1.png")
 
+const BattleMath := preload("res://scripts/battle_math.gd")
+
+const EVIDENCE_PASSIVE_THRESHOLD := 15
+
 var enemy_hp := 64
 var enemy_max_hp := 64
 var kiuchi_hp := 100
 var focus := 40
 var turn := 1
 var guard_active := false
+var fatigue_active := false
+var evidence_passive_active := false
 var resolving := false
 var enemy_label: Label
 var party_label: Label
@@ -27,10 +33,13 @@ func start(mode := "normal") -> void:
 		enemy_hp = 150
 		enemy_max_hp = 150
 		focus = 55
+	evidence_passive_active = GameState.expertise >= EVIDENCE_PASSIVE_THRESHOLD
 	layer = 50
 	_build_interface()
 	_update_display()
 	log_label.text = "四人が事実を持ち寄った。更新漏れ、締め時刻、部署間認識差を順に処理する。" if battle_mode == "case" else "積み上がった未処理伝票が、締め時刻への不安を増幅している。"
+	if evidence_passive_active:
+		log_label.text += "\n(既得スキル｜経理の勘どころ：「整理する」の威力+%d)" % BattleMath.EVIDENCE_PASSIVE_BONUS
 
 func _build_interface() -> void:
 	var backdrop := TextureRect.new()
@@ -118,36 +127,18 @@ func _choose_action(action: String) -> void:
 		return
 	resolving = true
 	_set_commands_enabled(false)
-	var damage := 0
-	match action:
-		"organize":
-			damage = 12 + GameState.expertise / 10 + (4 if battle_mode == "case" else 0)
-			log_label.text = "木内は伝票を日付と商品コードで並べ替えた。処理の順序が見えてきた。"
-		"technique":
-			if focus >= 10:
-				focus -= 10
-				damage = 20 + GameState.expertise / 5
-				log_label.text = "5250端末の照合手順を思い出し、重複と欠番を切り分けた。"
-			else:
-				log_label.text = "集中力が続かず、端末の入力位置を見失った。"
-		"network":
-			if GameState.has_flag("met_tanaka"):
-				damage = 16 + GameState.trust + (8 if battle_mode == "case" and GameState.has_flag("interviewed_accounting") else 0)
-				kiuchi_hp = mini(100, kiuchi_hp + 8)
-				log_label.text = "田中が営業側の事情を補足した。曖昧だった伝票の出所が絞られる。"
-			else:
-				log_label.text = "相談できる相手がまだいない。"
-		"negotiate":
-			if GameState.has_flag("checked_ledger"):
-				damage = 36 if battle_mode == "case" and GameState.has_flag("root_cause_found") else 28
-				log_label.text = "台帳との照合結果を根拠に、締め処理の順序変更を提案した。"
-			else:
-				damage = 5
-				log_label.text = "根拠が足りず、提案は保留になった。"
-		"guard":
-			guard_active = true
-			focus = mini(40, focus + 12)
-			log_label.text = "一度手を止め、優先順位と締め時刻を確認した。"
+	var result := BattleMath.resolve_action(action, {
+		"expertise": GameState.expertise, "trust": GameState.trust, "focus": focus, "battle_mode": battle_mode,
+		"met_tanaka": GameState.has_flag("met_tanaka"), "checked_ledger": GameState.has_flag("checked_ledger"),
+		"interviewed_accounting": GameState.has_flag("interviewed_accounting"), "root_cause_found": GameState.has_flag("root_cause_found"),
+		"fatigue_active": fatigue_active, "evidence_passive_active": evidence_passive_active,
+	})
+	var damage: int = result["damage"]
+	kiuchi_hp = mini(100, kiuchi_hp + int(result["heal"]))
+	focus = int(result["new_focus"])
+	guard_active = bool(result["guard"])
+	log_label.text = String(result["log_text"])
+	fatigue_active = false
 	enemy_hp = maxi(0, enemy_hp - damage)
 	_update_display()
 	await get_tree().create_timer(0.65).timeout
@@ -172,7 +163,8 @@ func _enemy_turn() -> void:
 		incoming = int(ceil(incoming * 0.35))
 	kiuchi_hp = maxi(0, kiuchi_hp - incoming)
 	if heavy:
-		log_label.text += "\n締め時刻の圧力で判断が急かされ、体力を%d失った。" % incoming
+		fatigue_active = true
+		log_label.text += "\n締め時刻の圧力で判断が急かされ、体力を%d失った。疲労で次の行動が鈍る。" % incoming
 	else:
 		log_label.text += "\n未確認の伝票が差し戻され、体力を%d失った。" % incoming
 
@@ -190,7 +182,8 @@ func _finish(victory: bool) -> void:
 func _update_display() -> void:
 	var enemy_name := "締め処理までの認識差" if battle_mode == "case" else "未処理伝票"
 	enemy_label.text = "%s\n処理残　%d / %d\n%s" % [enemy_name, enemy_hp, enemy_max_hp, _enemy_bar()]
-	party_label.text = ("木内 %d　田中 営業　佐藤 電算　山川 経理\n集中 %d / 55　四者連携" % [kiuchi_hp, focus]) if battle_mode == "case" else ("木内　体力 %d / 100　集中 %d / 40\n田中　%s" % [kiuchi_hp, focus, "同行中" if GameState.has_flag("met_tanaka") else "不在"])
+	var fatigue_note := "　⚠疲労" if fatigue_active else ""
+	party_label.text = ("木内 %d　田中 営業　佐藤 電算　山川 経理\n集中 %d / 55　四者連携%s" % [kiuchi_hp, focus, fatigue_note]) if battle_mode == "case" else ("木内　体力 %d / 100　集中 %d / 40%s\n田中　%s" % [kiuchi_hp, focus, fatigue_note, "同行中" if GameState.has_flag("met_tanaka") else "不在"])
 	intent_label.text = "次の圧力｜%s" % ("締め時刻（強）" if turn % 3 == 0 else "差し戻し")
 
 func _enemy_bar() -> String:
