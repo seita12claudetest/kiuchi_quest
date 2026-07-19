@@ -89,5 +89,6 @@
   ],
   "encounterRate": 0,
   "enemyPool": [],
-  "bgm": "hospital"
+  "bgm": "hospital",
+  "facilityEventId": "hospital_treatment"
 }

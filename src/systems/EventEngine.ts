@@ -88,8 +88,8 @@ export class EventEngine {
     return this.applyScene(result.event, state, choice.nextScene)
   }
 
-  canRun(event: EventDef, state: GameState): boolean {
-    return this.canRunWithContext(event, state as EventGameState)
+  canRun(event: EventDef, state: GameState, context: EventContext = {}): boolean {
+    return this.canRunWithContext(event, state as EventGameState, context)
   }
 
   canRunWithContext(event: EventDef, state: EventGameState, context: EventContext = {}): boolean {
@@ -119,7 +119,10 @@ export class EventEngine {
     if (effect.health) next.player.health = this.healthSystem.applyFoodEffect(next.player.health, { ...FULL_HEALTH, ...effect.health })
     if (effect.save) next.lastSavedAt = { day: next.day, timeSlot: next.timeSlot, map: next.currentMap }
     if (effect.rest) next.player.hp = next.player.maxHp
-    if (effect.cook) next.mealLog = [...(next.mealLog ?? []), effect.cook.meal]
+    if (effect.cook) {
+      next.mealLog = [...(next.mealLog ?? []), effect.cook.meal]
+      next.player.belly = Math.min(100, next.player.belly + effect.cook.belly)
+    }
     if (effect.hospital) next.player.health = this.healthSystem.applyHospital(next.player.health)
     if (effect.gym) {
       next.player.health = this.healthSystem.applyGym(next.player.health)

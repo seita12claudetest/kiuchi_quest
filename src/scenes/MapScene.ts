@@ -2,12 +2,10 @@ import type { GameState, MapDef, Scene } from '@/types'
 import { CollisionSystem } from '@/maps/CollisionSystem'
 import { MapLoader } from '@/maps/MapLoader'
 import { MapRenderer } from '@/maps/MapRenderer'
-import { HUD } from '@/ui/components/HUD'
 import { THEME } from '@/ui/themes/fantasy'
 
 const GRID_WIDTH = 18
 const GRID_HEIGHT = 12
-const hud = new HUD()
 
 export class MapScene implements Scene {
   private readonly loader: MapLoader
@@ -43,7 +41,7 @@ export class MapScene implements Scene {
       this.renderFallbackMap(ctx, state)
     }
 
-    hud.draw(ctx, state, ctx.canvas.width)
+    this.renderHud(ctx, state)
     ctx.fillStyle = THEME.colors.text
     ctx.font = THEME.fonts.main
     ctx.fillText('方向キー/WASD: 移動  Enter: タイトルへ戻る', 36, ctx.canvas.height - 36)
@@ -65,7 +63,7 @@ export class MapScene implements Scene {
     state.player.y = Math.max(0, Math.min(GRID_HEIGHT - 1, nextY))
   }
 
-  private async changeMap(mapId: string, state: GameState, x = state.player.x, y = state.player.y): Promise<void> {
+  async changeMap(mapId: string, state: GameState, x = state.player.x, y = state.player.y): Promise<void> {
     try {
       this.map = await this.loader.loadMap(mapId)
       this.collision = new CollisionSystem(this.map)
@@ -96,5 +94,23 @@ export class MapScene implements Scene {
     }
     ctx.fillStyle = '#ffdd59'
     ctx.fillRect(80 + state.player.x * tile + 8, 110 + state.player.y * tile + 8, 24, 24)
+  }
+
+  private renderHud(ctx: CanvasRenderingContext2D, state: GameState): void {
+    const career = state.career
+    ctx.save()
+    ctx.fillStyle = '#130d09e8'
+    ctx.strokeStyle = '#d2a352'
+    ctx.lineWidth = 2
+    ctx.fillRect(14, 14, ctx.canvas.width - 28, 62)
+    ctx.strokeRect(14, 14, ctx.canvas.width - 28, 62)
+    ctx.fillStyle = '#f2e3bd'
+    ctx.font = 'bold 18px "Yu Gothic", sans-serif'
+    ctx.fillText(`${career?.year ?? 1988}年　${career?.rankName ?? '新卒社員'}　Lv ${state.player.level}`, 32, 42)
+    ctx.fillText(`HP ${state.player.hp}/${state.player.maxHp}`, 32, 66)
+    ctx.fillStyle = '#e7b85a'
+    ctx.fillText(`${state.player.gold.toLocaleString()}円`, 220, 66)
+    ctx.fillText(`${state.currentMap} / Day ${state.day} / ${state.timeSlot}`, 390, 42)
+    ctx.restore()
   }
 }

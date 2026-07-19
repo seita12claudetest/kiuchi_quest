@@ -1,120 +1,3 @@
-import type { EventDef } from '@/types'
-
-export const events: EventDef[] = [
-  {
-    id: 'relation_mika_lunch',
-    name: 'ミカとのランチ',
-    type: 'relation',
-    trigger: { type: 'talk', value: 'mika' },
-    condition: { minRelation: { mika: 10 }, flags: { met_mika: true } },
-    repeatable: false,
-    scenes: [
-      { speaker: 'ミカ', text: '今日は一緒にランチに行きませんか？' },
-      { text: '楽しい昼食で距離が縮まった。', effect: { relation: { mika: 5 }, setFlags: { mika_lunch_done: true } } },
-    ],
-  },
-  {
-    id: 'health_check_warning',
-    name: '健康診断の警告',
-    type: 'health',
-    trigger: { type: 'health', value: 'blood:150' },
-    condition: { health: { blood: { min: 150 }, chol: { min: 220 } } },
-    repeatable: false,
-    scenes: [
-      { speaker: '医師', text: '血圧とコレステロールが高めです。生活を見直しましょう。' },
-      { text: '健康指導を受けた。', effect: { setFlags: { health_warning: true }, health: { blood: -5, chol: -10 } } },
-    ],
-  },
-  {
-    id: 'summer_festival',
-    name: '夏祭り',
-    type: 'season',
-    trigger: { type: 'time', value: 'evening' },
-    condition: { season: ['summer'], dayRange: [20, 30], weekday: ['sat', 'sun'] },
-    repeatable: false,
-    scenes: [
-      { text: '屋台の明かりが商店街を照らしている。' },
-      { text: '祭りの熱気で元気が出た。', effect: { hp: 10, gold: -100, items: [{ id: 'festival_charm', qty: 1 }] } },
-    ],
-  },
-  {
-    id: 'before_boss_encouragement',
-    name: 'ボス前の激励',
-    type: 'story',
-    trigger: { type: 'tile', value: 'boss_gate' },
-    condition: { minLevel: 5, flags: { boss_unlocked: true, boss_defeated: false } },
-    repeatable: false,
-    scenes: [
-      { speaker: '相棒', text: 'この先が勝負だ。準備はいい？' },
-      {
-        text: '覚悟を決めた。',
-        choices: [
-          { label: '進む', nextScene: 2, effect: { setFlags: { boss_ready: true } } },
-          { label: 'まだ準備する', nextScene: 2, effect: { hp: 5 } },
-        ],
-      },
-      { text: '大きな扉が開いた。' },
-    ],
-  },
-]
-
-export default events
-export const facilityEvents: EventDef[] = [
-  {
-    id: 'home_facility',
-    name: '自宅',
-    type: 'facility',
-    trigger: { type: 'tile', value: 'home' },
-    repeatable: true,
-    scenes: [
-      {
-        text: '自宅で何をしますか？',
-        choices: [
-          { label: '休息する', nextScene: 1 },
-          { label: '料理する', nextScene: 2 },
-          { label: 'セーブする', nextScene: 3 },
-          { label: '食事ログを見る', nextScene: 4 },
-        ],
-      },
-      { text: 'しっかり休んで体力を回復した。', effect: { rest: true, advanceTime: 1 } },
-      { text: '健康的な家庭料理を作って食べた。', effect: { cook: { meal: '家庭料理', belly: 25 }, health: { blood: -2, chol: -3, sugar: -2 }, advanceTime: 1 } },
-      { text: '現在の進行状況を記録した。', effect: { save: true, advanceTime: 1 } },
-      { text: 'これまでの食事ログを確認した。', effect: { advanceTime: 1 } },
-    ],
-  },
-  {
-    id: 'hospital_treatment',
-    name: '病院',
-    type: 'facility',
-    trigger: { type: 'tile', value: 'hospital' },
-    repeatable: true,
-    scenes: [
-      { text: '病院で診察と治療を受け、健康指標が改善した。', effect: { hospital: true, advanceTime: 1 } },
-    ],
-  },
-  {
-    id: 'hospital_auto_danger',
-    name: '緊急受診',
-    type: 'health',
-    trigger: { type: 'health', value: 'danger' },
-    repeatable: true,
-    scenes: [
-      { text: '健康値が危険域に達したため、自動的に病院へ向かった。', effect: { hospital: true, advanceTime: 1, setFlags: { autoHospitalVisited: true } } },
-    ],
-  },
-  {
-    id: 'gym_training',
-    name: 'ジム',
-    type: 'facility',
-    trigger: { type: 'tile', value: 'gym' },
-    repeatable: true,
-    scenes: [
-      { text: 'ジムで汗を流し、健康指標が改善した。継続利用で力とスキルポイントを得られる。', effect: { gym: { rewardEvery: 2, power: 1, sp: 1 }, advanceTime: 1 } },
-    ],
-  },
-]
-
-export default facilityEvents
 import type { EventDef } from '../types'
 
 export const events: EventDef[] = [
@@ -228,4 +111,59 @@ export const events: EventDef[] = [
   { id: 'event_108', name: '生活イベント 108', type: 'health', trigger: { type: 'auto', value: 'office' }, condition: { minLevel: 8, health: { blood: { max: 160 } } }, scenes: [{ speaker: 'npc_rival', text: '小さな選択が明日の木内を作る。', effect: { xp: 4, health: { blood: 0, sugar: 0 } } }], reward: { gold: 117, xp: 12 }, repeatable: false },
   { id: 'event_109', name: '生活イベント 109', type: 'story', trigger: { type: 'tile', value: 'yokocho' }, condition: { minLevel: 9 }, scenes: [{ speaker: 'npc_clerk', text: '小さな選択が明日の木内を作る。', effect: { xp: 5, health: { blood: 0, sugar: 0 } } }], reward: { gold: 118, xp: 13 }, repeatable: true },
   { id: 'event_110', name: '生活イベント 110', type: 'random', trigger: { type: 'talk', value: 'office' }, condition: { minLevel: 10 }, scenes: [{ speaker: 'npc_mayor', text: '小さな選択が明日の木内を作る。', effect: { xp: 6, health: { blood: 0, sugar: 0 } } }], reward: { gold: 119, xp: 14 }, repeatable: false }
+]
+
+export const facilityEvents: EventDef[] = [
+  {
+    id: 'home_facility',
+    name: '自宅',
+    type: 'facility',
+    trigger: { type: 'tile', value: 'home' },
+    repeatable: true,
+    scenes: [
+      {
+        text: '自宅で何をしますか？',
+        choices: [
+          { label: '休息する', nextScene: 1 },
+          { label: '料理する', nextScene: 2 },
+          { label: 'セーブする', nextScene: 3 },
+          { label: '食事ログを見る', nextScene: 4 },
+        ],
+      },
+      { text: 'しっかり休んで体力を回復した。', effect: { rest: true, advanceTime: 1 } },
+      { text: '健康的な家庭料理を作って食べた。', effect: { cook: { meal: '家庭料理', belly: 25 }, health: { blood: -2, chol: -3, sugar: -2 }, advanceTime: 1 } },
+      { text: '現在の進行状況を記録した。', effect: { save: true, advanceTime: 1 } },
+      { text: 'これまでの食事ログを確認した。', effect: { advanceTime: 1 } },
+    ],
+  },
+  {
+    id: 'hospital_treatment',
+    name: '病院',
+    type: 'facility',
+    trigger: { type: 'tile', value: 'hospital' },
+    repeatable: true,
+    scenes: [
+      { text: '病院で診察と治療を受け、健康指標が改善した。', effect: { hospital: true, advanceTime: 1 } },
+    ],
+  },
+  {
+    id: 'hospital_auto_danger',
+    name: '緊急受診',
+    type: 'health',
+    trigger: { type: 'health', value: 'danger' },
+    repeatable: true,
+    scenes: [
+      { text: '健康値が危険域に達したため、自動的に病院へ向かった。', effect: { hospital: true, advanceTime: 1, setFlags: { autoHospitalVisited: true } } },
+    ],
+  },
+  {
+    id: 'gym_training',
+    name: 'ジム',
+    type: 'facility',
+    trigger: { type: 'tile', value: 'gym' },
+    repeatable: true,
+    scenes: [
+      { text: 'ジムで汗を流し、健康指標が改善した。継続利用で力とスキルポイントを得られる。', effect: { gym: { rewardEvery: 2, power: 1, sp: 1 }, advanceTime: 1 } },
+    ],
+  },
 ]

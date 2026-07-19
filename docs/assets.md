@@ -104,3 +104,60 @@ src/
 - [ ] `src/data/foods.ts` の各データに `spritePos` を割り当てる。
 - [ ] アイコン未設定時は絵文字フォールバック表示する。
 - [ ] `tests/data/foods.test.ts` で全食料データの `icon` または `spritePos` を検証する。
+
+## 採用済み素材（2026-07-19）
+
+### Kenney Digital Audio
+- Source: https://kenney.nl/assets/digital-audio
+- Author: Kenney
+- License: CC0 1.0（公式素材ページおよび同梱 `License.txt` で確認）
+- Used for: UI選択、決定、キャンセル、昇進の効果音
+- Local files: `public/assets/audio/ui/*.ogg`
+- License copy: `public/assets/licenses/kenney-digital-audio-license.txt`
+- Notes: 公式ZIPから4音だけを選定。改名以外の加工なし。商用利用可、クレジット不要。
+
+### 木内キャラクター歩行スプライト
+- Source: OpenAI image generation（プロジェクト専用のオリジナル生成物）
+- Author: Generated for kiuchi_quest
+- License: プロジェクト専用生成素材。第三者ゲーム素材の模倣を禁止したプロンプトで制作。
+- Used for: 主人公の4方向歩行表示
+- Local files: `public/assets/characters/kiuchi-walk.png`
+- Notes: 4列×3行。クロマキー除去済み。生成日 2026-07-19。
+
+### 歓楽横丁マップ背景
+- Source: OpenAI image generation（プロジェクト専用のオリジナル生成物）
+- Author: Generated for kiuchi_quest
+- License: プロジェクト専用生成素材
+- Used for: `yokocho` マップ背景
+- Local files: `public/assets/maps/yokocho-night.png`
+- Notes: 人物なしの歩行用背景。生成日 2026-07-19。今後、明確なCC0タイルセットで品質が上がる場合は差し替え可能。
+
+### 1988年会社マップ背景
+- Source: OpenAI image generation（プロジェクト専用のオリジナル生成物）
+- Author: Generated for kiuchi_quest
+- License: プロジェクト専用生成素材
+- Used for: `office` マップ背景、朝〜夕方の勤務パート
+- Local files: `public/assets/maps/office-1988.png`
+- Notes: 人物・実在企業ロゴなし。AS/400時代を想起させる汎用端末、紙、FAX、会議室を配置。生成日 2026-07-19。
+
+### 日本食アイコンアトラス
+- Source: OpenAI image generation（既存無料素材の比較調査中の暫定オリジナル）
+- Author: Generated for kiuchi_quest
+- License: プロジェクト専用生成素材
+- Used for: 食事・飲み物・薬の24アイコン
+- Local files: `public/assets/icons/food/japanese-food-atlas.png`
+- Notes: 6列×4行、クロマキー除去済み。生成日 2026-07-19。
+
+## 調査済み素材サイト
+
+| サービス | 主用途 | ライセンス判断 | 採用状況 |
+|---|---|---|---|
+| Kenney | UI、2D、音声 | 各asset pageはCC0。公式FAQでも商用利用可・表記不要 | 音声を採用 |
+| Free Game UI Assets | SVGボタン、パネル、ゲージ、アイコン | 全素材CC0 1.0、商用可、表記不要 | UI差し替え候補 |
+| OpenGameArt | 2D、音楽、効果音 | 混在。素材ページ単位でCC0/CC-BY等を確認必須 | CC0のみ継続選定 |
+| itch.io CC0 filters | タイル、UI、ドット絵 | 出品者ごとに条件が異なるため個別確認必須 | 候補探索に使用 |
+| Screaming Brain Studios | タイル、UI、テクスチャ | 配布パックはCC0/Public Domain | マップ候補 |
+| Game UI Database / Interface In Game | UIリファレンス | 参考閲覧専用。画像の転用は禁止 | デザイン参考のみ |
+| S5-Style / Web Design Garden | 日本のWebデザイン参考 | 参考閲覧専用 | Web外装の参考のみ |
+
+ライセンス確認URLと調査メモは `docs/research/design-game-resources.md` に保存する。

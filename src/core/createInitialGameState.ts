@@ -2,11 +2,23 @@ import type { GameState } from '@/types'
 
 export function createInitialGameState(): GameState {
   return {
-    currentMap: 'yokocho',
+    currentMap: 'office',
     day: 1,
-    timeSlot: 'evening',
+    timeSlot: 'morning',
     flags: {},
+    eventLog: ['1988年、AS/400導入。「紙の台帳が、画面の向こうへ引っ越していく……時代が動いてるな」'],
+    relations: { boss: 5, colleague: 10, yokocho_master: 0 },
+    questProgress: {
+      first_assignment: { started: true, done: false, claimed: false, progress: 0 },
+      office_friendship: { started: true, done: false, claimed: false, progress: 0 },
+      healthy_routine: { started: true, done: false, claimed: false, progress: 0 },
+    },
+    workDays: 0,
     mode: 'title',
+    career: {
+      rank: 'new_hire', rankName: '新卒社員', performance: 0, trust: 5,
+      expertise: 0, politics: 0, stress: 8, age: 22, year: 1988, calendarMonth: 4, monthsAtRank: 0,
+    },
     player: {
       x: 6,
       y: 6,

@@ -9,6 +9,9 @@ const OVERLAYS: Partial<Record<TimeSlot, string>> = { morning: 'rgba(255,180,80,
 
 export class MapRenderer {
   readonly camera: Camera
+  private readonly yokochoBackground = this.loadImage('assets/maps/yokocho-night.png')
+  private readonly officeBackground = this.loadImage('assets/maps/office-1988.png')
+  private readonly kiuchiSprite = this.loadImage('assets/characters/kiuchi-walk.png')
 
   constructor(viewportWidth: number, viewportHeight: number, tileSize = TILE_SIZE) {
     this.camera = new Camera(viewportWidth, viewportHeight, tileSize, 0.25)
@@ -17,7 +20,12 @@ export class MapRenderer {
   render(ctx: CanvasRenderingContext2D, map: MapDef, state: GameState): void {
     this.camera.follow(state.player.x, state.player.y, map.width, map.height)
     ctx.clearRect(0, 0, this.camera.viewportWidth, this.camera.viewportHeight)
-    this.renderTiles(ctx, map)
+    const background = map.id === 'yokocho' ? this.yokochoBackground : map.id === 'office' ? this.officeBackground : undefined
+    if (background?.complete && background.naturalWidth > 0) {
+      ctx.drawImage(background, 0, 0, this.camera.viewportWidth, this.camera.viewportHeight)
+    } else {
+      this.renderTiles(ctx, map)
+    }
     this.renderNpcs(ctx, map)
     this.renderPlayer(ctx, state.player.x, state.player.y)
     this.renderTimeOverlay(ctx, state.timeSlot)
@@ -43,17 +51,40 @@ export class MapRenderer {
   }
 
   private renderNpcs(ctx: CanvasRenderingContext2D, map: MapDef): void {
-    ctx.fillStyle = '#ffdd55'
     for (const npc of map.npcs) {
       const screen = this.camera.worldToScreen(npc.x, npc.y)
-      ctx.fillRect(screen.x + 8, screen.y + 8, this.camera.tileSize - 16, this.camera.tileSize - 16)
+      ctx.fillStyle = '#3a2419'
+      ctx.beginPath()
+      ctx.arc(screen.x + 20, screen.y + 18, 11, 0, Math.PI * 2)
+      ctx.fill()
+      ctx.fillStyle = '#d4a15d'
+      ctx.fillRect(screen.x + 12, screen.y + 28, 16, 10)
     }
   }
 
   private renderPlayer(ctx: CanvasRenderingContext2D, x: number, y: number): void {
     const screen = this.camera.worldToScreen(x, y)
-    ctx.fillStyle = '#4cc9f0'
-    ctx.fillRect(screen.x + 6, screen.y + 6, this.camera.tileSize - 12, this.camera.tileSize - 12)
+    if (this.kiuchiSprite?.complete && this.kiuchiSprite.naturalWidth > 0) {
+      const frameWidth = this.kiuchiSprite.naturalWidth / 4
+      const frameHeight = this.kiuchiSprite.naturalHeight / 3
+      ctx.drawImage(this.kiuchiSprite, 0, frameHeight, frameWidth, frameHeight, screen.x - 4, screen.y - 28, 48, 64)
+      return
+    }
+    ctx.save()
+    ctx.fillStyle = '#17243d'
+    ctx.fillRect(screen.x + 8, screen.y + 12, 24, 25)
+    ctx.fillStyle = '#d5a36f'
+    ctx.fillRect(screen.x + 12, screen.y + 3, 16, 13)
+    ctx.fillStyle = '#b22b28'
+    ctx.fillRect(screen.x + 19, screen.y + 16, 3, 16)
+    ctx.restore()
+  }
+
+  private loadImage(path: string): HTMLImageElement | undefined {
+    if (typeof Image === 'undefined') return undefined
+    const image = new Image()
+    image.src = `${import.meta.env.BASE_URL}${path}`
+    return image
   }
 
   private renderTimeOverlay(ctx: CanvasRenderingContext2D, timeSlot: TimeSlot): void {
