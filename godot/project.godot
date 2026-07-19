@@ -5,6 +5,9 @@ config/name="木内の大冒険 DELUXE"
 run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.7")
 
+[autoload]
+GameState="*res://scripts/game_state.gd"
+
 [display]
 window/size/viewport_width=960
 window/size/viewport_height=540

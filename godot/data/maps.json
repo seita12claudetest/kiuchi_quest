@@ -1,6 +1,6 @@
 {
   "office_front": {
-    "display_name": "東都商事 本社前", "size": [960, 540], "ground": "#5f7260", "default_spawn": [480, 410],
+    "display_name": "東都商事 本社前", "size": [960, 540], "ground": "#5f7260", "background": "res://assets/backgrounds/office-front-v2.png", "default_spawn": [480, 410],
     "spawns": [{"id":"start","position":[480,410]},{"id":"from_station","position":[110,270]},{"id":"from_office","position":[480,335]}],
     "roads": [{"position":[480,430],"size":[960,150],"color":"#6d6b64"},{"position":[160,270],"size":[320,90],"color":"#908772"}],
     "buildings": [{"position":[480,205],"size":[430,230],"label":"東都商事","color":"#7b6657"}],
@@ -9,19 +9,29 @@
       {"id":"office_front_to_inside","position":[480,325],"label":"東都商事へ入る","to_map":"office_inside","to_spawn":"from_front"},
       {"id":"office_front_to_station","position":[55,270],"label":"駅前へ向かう","to_map":"station","to_spawn":"from_office"}
     ],
-    "interactions": [{"id":"office_sign","position":[650,320],"label":"社名板","verb":"調べる","text":"東都商事株式会社。真新しい金文字が朝日に光っている。"}]
+    "interactions": [
+      {"id":"tanaka_front","position":[720,390],"label":"田中同僚","verb":"話す","time_cost":10,"repeat_policy":"once","effects":{"trust":1,"flags":["met_tanaka"]},"text":"田中「木内、来たな。まず受付に顔を出そう。緊張するのは全員同じだ」"},
+      {"id":"office_sign","position":[650,320],"label":"社名板","verb":"調べる","text":"東都商事株式会社。真新しい金文字が朝日に光っている。"},
+      {"id":"vending_machine","position":[190,355],"label":"赤い自動販売機","verb":"調べる","text":"缶コーヒーは百円。初出社の日には、まだ少し苦そうに見える。"}
+    ]
   },
   "office_inside": {
-    "display_name": "東都商事 営業部", "size": [960,540], "ground":"#b8a77e", "default_spawn":[480,460],
+    "display_name": "東都商事 営業部", "size": [960,540], "ground":"#b8a77e", "background":"res://assets/backgrounds/office-inside-v1.png", "default_spawn":[480,460],
     "spawns":[{"id":"from_front","position":[480,450]}],
     "roads":[{"position":[480,270],"size":[760,360],"color":"#c8b990"}],
     "buildings":[{"position":[270,205],"size":[210,100],"label":"営業一課","color":"#73513d"},{"position":[690,205],"size":[210,100],"label":"電算端末","color":"#3d514b"}],
-    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "walls":[
+      {"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},
+      {"position":[220,285],"size":[300,245]},{"position":[745,285],"size":[330,245]},
+      {"position":[475,120],"size":[175,95]},{"position":[760,110],"size":[270,90]},{"position":[115,115],"size":[190,120]}
+    ],
     "portals":[{"id":"office_inside_to_front","position":[480,495],"label":"会社前へ出る","to_map":"office_front","to_spawn":"from_office"}],
     "interactions":[
-      {"id":"tanaka","position":[310,330],"label":"田中同僚","verb":"話す","text":"田中「木内、今日の伝票はここだ。分からなければ聞けよ」"},
-      {"id":"sato","position":[650,330],"label":"佐藤先輩","verb":"話す","text":"佐藤「AS/400は便利だが、入力する元の数字までは直してくれないぞ」"},
-      {"id":"terminal","position":[690,250],"label":"5250端末","verb":"調べる","text":"黒い画面に緑色の文字。商品コード入力画面が開いている。"}
+      {"id":"tanaka","position":[405,330],"label":"田中同僚","verb":"話す","time_cost":10,"repeat_policy":"once","effects":{"trust":1,"flags":["met_tanaka"]},"text":"田中「木内、今日の伝票はここだ。焦らなくていい。分からなければ、分からないと早めに言えよ」"},
+      {"id":"sato","position":[555,295],"label":"佐藤先輩","verb":"話す","time_cost":15,"repeat_policy":"once","requires_flags":["met_tanaka"],"blocked_text":"佐藤先輩は資料を読んでいる。まず田中さんへ挨拶しよう。","effects":{"expertise":2,"flags":["received_first_job"]},"text":"佐藤「AS/400は便利だが、入力する元の数字までは直してくれない。まず商品コードを照合してみろ」"},
+      {"id":"terminal","position":[770,165],"label":"5250端末","verb":"調べる","time_cost":30,"repeat_policy":"once","requires_flags":["received_first_job"],"blocked_text":"端末は空いているが、勝手に操作してはいけない。担当者の指示を待とう。","effects":{"energy":-5,"expertise":3,"flags":["checked_terminal"]},"text":"黒い画面に緑色の文字。旧コードと新コードの対応表に、一件だけ更新日の古い行がある。"},
+      {"id":"sales_ledger","position":[365,230],"label":"月次売上台帳","verb":"照合する","time_cost":45,"repeat_policy":"once","requires_flags":["checked_terminal"],"blocked_text":"分厚い台帳だ。先に端末側の商品コードを確認した方がよさそうだ。","effects":{"energy":-8,"expertise":3,"trust":1,"flags":["checked_ledger"]},"text":"伝票を一枚ずつ照合すると、集計差額と同じ金額の商品が見つかった。偶然ではなさそうだ。"},
+      {"id":"time_clock","position":[535,445],"label":"タイムレコーダー","verb":"調べる","time_cost":2,"text":"厚いタイムカードが部署ごとに並ぶ。定時は17時30分だが、まだ誰も帰る気配がない。"}
     ]
   },
   "station": {
@@ -44,7 +54,7 @@
     "buildings":[{"position":[300,220],"size":[210,110],"label":"居間","color":"#79533d"},{"position":[650,220],"size":[190,110],"label":"台所","color":"#6f5d48"}],
     "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
     "portals":[{"id":"home_to_station","position":[480,495],"label":"駅へ向かう","to_map":"station","to_spawn":"from_home"}],
-    "interactions":[{"id":"mother","position":[320,340],"label":"木内の母","verb":"話す","text":"母「初日から無理しなくていいのよ。朝ごはんは食べなさい」"},{"id":"newspaper","position":[610,320],"label":"朝刊","verb":"読む","text":"円高、土地価格、コンピュータ化。難しい言葉が紙面に並んでいる。"}]
+    "interactions":[{"id":"mother","position":[320,340],"label":"木内の母","verb":"話す","text":"母「初日から無理しなくていいのよ。朝ごはんは食べなさい」"},{"id":"newspaper","position":[610,320],"label":"朝刊","verb":"読む","time_cost":15,"effects":{"expertise":1},"text":"円高、土地価格、コンピュータ化。難しい言葉が紙面に並んでいる。"},{"id":"bed","position":[730,360],"label":"木内の布団","verb":"休む","action":"rest","requires_flags":["first_day_reported"],"blocked_text":"まだ初日の仕事が終わっていない。先に会社へ向かおう。","text":"慣れない一日を終え、木内は深く眠った。翌朝、月次売上の差額が見つかる。"}]
   },
   "yokocho": {
     "display_name":"昭和横丁", "size":[1200,620], "ground":"#2f2730", "default_spawn":[1080,520],

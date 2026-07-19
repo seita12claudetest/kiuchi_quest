@@ -5,6 +5,7 @@ const WALK_SPEED := 96.0
 const RUN_SPEED := 156.0
 const ACCELERATION := 1200.0
 const DECELERATION := 960.0
+const KIUCHI_DIRECTIONS := preload("res://assets/characters/kiuchi-directions-v2.png")
 
 var facing := Vector2.DOWN
 var movement_enabled := true
@@ -26,14 +27,20 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func _draw() -> void:
-	draw_rect(Rect2(-10, -23, 20, 18), Color("#d7a06c"))
-	draw_rect(Rect2(-13, -5, 26, 25), Color("#243552"))
-	draw_rect(Rect2(-2, -4, 4, 18), Color("#9e3030"))
-	draw_rect(Rect2(-9, 20, 7, 9), Color("#22242b"))
-	draw_rect(Rect2(2, 20, 7, 9), Color("#22242b"))
-	var eye := facing * 4.0
-	draw_circle(Vector2(eye.x - 3, -15 + eye.y * 0.25), 1.2, Color("#2c211c"))
-	draw_circle(Vector2(eye.x + 3, -15 + eye.y * 0.25), 1.2, Color("#2c211c"))
+	draw_ellipse_shadow()
+	var frame := 0
+	if facing == Vector2.LEFT:
+		frame = 1
+	elif facing == Vector2.RIGHT:
+		frame = 2
+	elif facing == Vector2.UP:
+		frame = 3
+	draw_texture_rect_region(KIUCHI_DIRECTIONS, Rect2(-32, -65, 64, 96), Rect2(frame * 64, 0, 64, 96))
+
+func draw_ellipse_shadow() -> void:
+	draw_set_transform(Vector2(0, 31), 0.0, Vector2(1.0, 0.38))
+	draw_circle(Vector2.ZERO, 17.0, Color(0.03, 0.04, 0.05, 0.42))
+	draw_set_transform(Vector2.ZERO)
 
 func _cardinal(direction: Vector2) -> Vector2:
 	if abs(direction.x) > abs(direction.y):

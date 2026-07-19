@@ -57,4 +57,11 @@
 3. マップ上の見えるものと実際の機能が一致するか。
 4. 失敗が理不尽な停止ではなく次の展開になるか。
 5. 参考作品の固有表現を複製していないか。
+# Visual quality gate
+
+- [ ] Company-front door and portal occupy the same visible position.
+- [ ] Kiuchi, Tanaka, the company sign and vending machine each have distinct readable silhouettes.
+- [ ] HUD, objective, toast and dialogue never overlap at 960×540 or 1280×720.
+- [ ] Every shipped exterior contains environmental detail beyond a ground rectangle and building rectangle.
+- [ ] Visual direction is reviewed from a real Godot capture, not only from a mockup.
 
