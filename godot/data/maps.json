@@ -27,7 +27,11 @@
     ],
     "portals":[{"id":"office_inside_to_front","position":[480,495],"label":"会社前へ出る","to_map":"office_front","to_spawn":"from_office"}],
     "interactions":[
-      {"id":"tanaka","position":[405,330],"label":"田中同僚","verb":"話す","time_cost":10,"repeat_policy":"once","effects":{"trust":1,"flags":["met_tanaka"]},"text":"田中「木内、今日の伝票はここだ。焦らなくていい。分からなければ、分からないと早めに言えよ」"},
+      {"id":"tanaka","position":[405,330],"label":"田中同僚","verb":"話す","time_cost":10,"relationship_npc":"tanaka","effects":{"relationships":{"tanaka":1},"flags":["met_tanaka"]},"dialogue_tiers":[
+        {"min":6,"text":"田中「木内、この頃は任せて安心して見ていられる。困ったら真っ先に声をかけろよ」","flags":["tanaka_close_friend"]},
+        {"min":3,"text":"田中「木内、板についてきたな。伝票の癖もだいぶ覚えただろう」"},
+        {"min":0,"text":"田中「木内、今日の伝票はここだ。焦らなくていい。分からなければ、分からないと早めに言えよ」"}
+      ]},
       {"id":"sato","position":[555,295],"label":"佐藤先輩","verb":"話す","time_cost":15,"repeat_policy":"once","requires_flags":["met_tanaka"],"blocked_text":"佐藤先輩は資料を読んでいる。まず田中さんへ挨拶しよう。","effects":{"expertise":2,"flags":["received_first_job"]},"text":"佐藤「AS/400は便利だが、入力する元の数字までは直してくれない。まず商品コードを照合してみろ」"},
       {"id":"terminal","position":[770,165],"label":"5250端末","verb":"調べる","time_cost":30,"repeat_policy":"once","requires_flags":["received_first_job"],"blocked_text":"端末は空いているが、勝手に操作してはいけない。担当者の指示を待とう。","effects":{"energy":-5,"expertise":3,"performance":2,"flags":["checked_terminal"]},"text":"黒い画面に緑色の文字。旧コードと新コードの対応表に、一件だけ更新日の古い行がある。"},
       {"id":"sales_ledger","position":[365,230],"label":"月次売上台帳","verb":"照合する","time_cost":45,"repeat_policy":"once","requires_flags":["checked_terminal"],"blocked_text":"分厚い台帳だ。先に端末側の商品コードを確認した方がよさそうだ。","effects":{"energy":-8,"expertise":3,"trust":1,"performance":4,"flags":["checked_ledger"]},"text":"伝票を一枚ずつ照合すると、集計差額と同じ金額の商品が見つかった。偶然ではなさそうだ。"},

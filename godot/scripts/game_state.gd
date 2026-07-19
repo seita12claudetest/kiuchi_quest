@@ -72,6 +72,21 @@ func apply_interaction(data: Dictionary) -> void:
 		completed_interactions[interaction_id] = true
 	save_game()
 
+func dialogue_text(data: Dictionary) -> String:
+	var tiers: Array = data.get("dialogue_tiers", [])
+	if tiers.is_empty():
+		return String(data.get("text", "何もない。"))
+	var npc := String(data.get("relationship_npc", ""))
+	var level := int(relationships.get(npc, 0))
+	var sorted_tiers: Array = tiers.duplicate()
+	sorted_tiers.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a.get("min", 0)) > int(b.get("min", 0)))
+	for tier: Dictionary in sorted_tiers:
+		if level >= int(tier.get("min", 0)):
+			for flag in tier.get("flags", []):
+				flags[String(flag)] = true
+			return String(tier.get("text", ""))
+	return String(data.get("text", "何もない。"))
+
 func can_interact(data: Dictionary) -> bool:
 	if int(data.get("cost", 0)) > money:
 		return false
