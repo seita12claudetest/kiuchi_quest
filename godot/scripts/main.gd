@@ -3,6 +3,7 @@ extends Node2D
 const MAPS_PATH := "res://data/maps.json"
 const WorldMapClass := preload("res://scripts/world_map.gd")
 const BattleControllerClass := preload("res://scripts/battle_controller.gd")
+const WorkActionControllerClass := preload("res://scripts/work_action_controller.gd")
 
 @onready var world_root: Node2D = $WorldRoot
 @onready var player: KiuchiPlayer = $Player
@@ -24,10 +25,12 @@ var current_action: Dictionary = {}
 var toast_timer := 0.0
 var dialog_open := false
 var battle_active := false
+var menu_active := false
 
 func _ready() -> void:
 	maps = _load_maps()
 	var debug_battle := false
+	var debug_work_menu := false
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--map="):
 			var requested_map := argument.trim_prefix("--map=")
@@ -35,10 +38,14 @@ func _ready() -> void:
 				current_map_id = requested_map
 		elif argument == "--battle":
 			debug_battle = true
+		elif argument == "--work-menu":
+			debug_work_menu = true
 	change_map(current_map_id, "start")
 	_update_hud()
 	if debug_battle:
 		_start_battle()
+	elif debug_work_menu:
+		_start_work_menu()
 
 func _process(delta: float) -> void:
 	if toast_timer > 0.0:
@@ -78,6 +85,9 @@ func change_map(map_id: String, spawn_id: String) -> void:
 func activate(action: Dictionary) -> void:
 	var data: Dictionary = action["data"]
 	if action["kind"] == "portal":
+		if current_map_id == "office_inside" and String(data.get("to_map", "")) == "office_front" and GameState.weekday < 5 and GameState.minutes >= 8 * 60 + 30 and GameState.minutes < 17 * 60 + 30:
+			open_dialog("勤務時間", "まだ勤務時間中だ。昼休みか、17時30分以降に出よう。週間予定表から仕事を選べる。")
+			return
 		change_map(data["to_map"], data["to_spawn"])
 		return
 	if not GameState.can_interact(data):
@@ -91,6 +101,9 @@ func activate(action: Dictionary) -> void:
 		return
 	if String(data.get("action", "")) == "battle":
 		_start_battle()
+		return
+	if String(data.get("action", "")) == "work_plan":
+		_start_work_menu()
 		return
 	if String(data.get("id", "")) in ["tanaka", "tanaka_front"] and GameState.has_flag("checked_ledger") and not GameState.has_flag("first_day_reported"):
 		GameState.set_flag("first_day_reported")
@@ -137,6 +150,24 @@ func _start_battle() -> void:
 	battle.battle_finished.connect(_on_battle_finished)
 	add_child(battle)
 	battle.start()
+
+func _start_work_menu() -> void:
+	if menu_active:
+		return
+	menu_active = true
+	player.movement_enabled = false
+	var menu := WorkActionControllerClass.new()
+	menu.action_finished.connect(_on_work_action_finished)
+	add_child(menu)
+	menu.start()
+
+func _on_work_action_finished(result: Dictionary) -> void:
+	menu_active = false
+	player.movement_enabled = true
+	if bool(result.get("cancelled", false)):
+		return
+	open_dialog(String(result.get("title", "仕事")), String(result.get("message", "")))
+	_update_hud()
 
 func _on_battle_finished(result: Dictionary) -> void:
 	battle_active = false
