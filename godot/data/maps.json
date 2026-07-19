@@ -29,33 +29,47 @@
     "interactions":[
       {"id":"tanaka","position":[405,330],"label":"田中同僚","verb":"話す","time_cost":10,"repeat_policy":"once","effects":{"trust":1,"flags":["met_tanaka"]},"text":"田中「木内、今日の伝票はここだ。焦らなくていい。分からなければ、分からないと早めに言えよ」"},
       {"id":"sato","position":[555,295],"label":"佐藤先輩","verb":"話す","time_cost":15,"repeat_policy":"once","requires_flags":["met_tanaka"],"blocked_text":"佐藤先輩は資料を読んでいる。まず田中さんへ挨拶しよう。","effects":{"expertise":2,"flags":["received_first_job"]},"text":"佐藤「AS/400は便利だが、入力する元の数字までは直してくれない。まず商品コードを照合してみろ」"},
-      {"id":"terminal","position":[770,165],"label":"5250端末","verb":"調べる","time_cost":30,"repeat_policy":"once","requires_flags":["received_first_job"],"blocked_text":"端末は空いているが、勝手に操作してはいけない。担当者の指示を待とう。","effects":{"energy":-5,"expertise":3,"flags":["checked_terminal"]},"text":"黒い画面に緑色の文字。旧コードと新コードの対応表に、一件だけ更新日の古い行がある。"},
-      {"id":"sales_ledger","position":[365,230],"label":"月次売上台帳","verb":"照合する","time_cost":45,"repeat_policy":"once","requires_flags":["checked_terminal"],"blocked_text":"分厚い台帳だ。先に端末側の商品コードを確認した方がよさそうだ。","effects":{"energy":-8,"expertise":3,"trust":1,"flags":["checked_ledger"]},"text":"伝票を一枚ずつ照合すると、集計差額と同じ金額の商品が見つかった。偶然ではなさそうだ。"},
+      {"id":"terminal","position":[770,165],"label":"5250端末","verb":"調べる","time_cost":30,"repeat_policy":"once","requires_flags":["received_first_job"],"blocked_text":"端末は空いているが、勝手に操作してはいけない。担当者の指示を待とう。","effects":{"energy":-5,"expertise":3,"performance":2,"flags":["checked_terminal"]},"text":"黒い画面に緑色の文字。旧コードと新コードの対応表に、一件だけ更新日の古い行がある。"},
+      {"id":"sales_ledger","position":[365,230],"label":"月次売上台帳","verb":"照合する","time_cost":45,"repeat_policy":"once","requires_flags":["checked_terminal"],"blocked_text":"分厚い台帳だ。先に端末側の商品コードを確認した方がよさそうだ。","effects":{"energy":-8,"expertise":3,"trust":1,"performance":4,"flags":["checked_ledger"]},"text":"伝票を一枚ずつ照合すると、集計差額と同じ金額の商品が見つかった。偶然ではなさそうだ。"},
       {"id":"unprocessed_slips","position":[590,225],"label":"未処理伝票の束","verb":"整理する","action":"battle","requires_flags":["first_day_complete"],"blocked_text":"初日に任された確認を終えてから取り掛かろう。","text":"未処理伝票を前にすると、木内の意識が心象世界へ沈んでいく。"},
       {"id":"time_clock","position":[535,445],"label":"タイムレコーダー","verb":"調べる","time_cost":2,"text":"厚いタイムカードが部署ごとに並ぶ。定時は17時30分だが、まだ誰も帰る気配がない。"}
     ]
   },
   "station": {
-    "display_name":"木ノ下駅前", "size":[960,540], "ground":"#6e765b", "default_spawn":[480,300],
+    "display_name":"木ノ下駅前", "size":[960,540], "ground":"#6e765b", "background":"res://assets/backgrounds/station-v1.png", "default_spawn":[480,330],
     "spawns":[{"id":"from_office","position":[790,270]},{"id":"from_home","position":[480,460]},{"id":"from_yokocho","position":[170,270]}],
     "roads":[{"position":[480,270],"size":[960,110],"color":"#77736b"},{"position":[480,405],"size":[110,270],"color":"#8c806d"}],
     "buildings":[{"position":[480,100],"size":[330,145],"label":"木ノ下駅","color":"#6b554c"}],
-    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[480,142],"size":[570,150]},{"position":[180,397],"size":[315,105]},{"position":[760,408],"size":[300,120]},{"position":[561,275],"size":[70,105]}],
     "portals":[
       {"id":"station_to_office","position":[900,270],"label":"会社前へ","to_map":"office_front","to_spawn":"from_station"},
       {"id":"station_to_yokocho","position":[60,270],"label":"昭和横丁へ","to_map":"yokocho","to_spawn":"from_station"},
       {"id":"station_to_home","position":[480,495],"label":"住宅街へ","to_map":"home","to_spawn":"from_station"}
     ],
-    "interactions":[{"id":"station_board","position":[480,175],"label":"駅の時刻表","verb":"調べる","text":"国鉄からJRへ変わって一年。新しいロゴがまだ街に馴染んでいない。"}]
+    "interactions":[
+      {"id":"station_board","position":[395,222],"label":"駅の時刻表","verb":"調べる","time_cost":3,"text":"国鉄から民営化されて一年。制服も看板も新しくなったが、いつもの通勤客は同じ時間に集まる。"},
+      {"id":"station_clock","position":[560,232],"label":"駅前時計","verb":"見る","time_cost":1,"text":"待ち合わせの基準になる大時計。会社へ急ぐなら、あと二十分は余裕がある。"},
+      {"id":"station_kiosk","position":[685,218],"label":"駅売店","verb":"見る","time_cost":3,"text":"新聞、週刊誌、煙草、ガム。見出しには地価高騰と円高の文字が躍っている。"},
+      {"id":"station_phone","position":[625,285],"label":"公衆電話","verb":"調べる","time_cost":2,"text":"赤と緑の公衆電話。外回りの社員が小銭を握って連絡を入れている。"},
+      {"id":"bicycle_parking","position":[275,365],"label":"駐輪場","verb":"見る","time_cost":2,"text":"通勤用の自転車がぎっしり並ぶ。駅前の放置自転車は、この頃すでに街の悩みだった。"}
+    ]
   },
   "home": {
-    "display_name":"木内の自宅", "size":[960,540], "ground":"#9c896b", "default_spawn":[480,430],
-    "spawns":[{"id":"from_station","position":[480,450]}],
+    "display_name":"木内の自宅", "size":[960,540], "ground":"#9c896b", "background":"res://assets/backgrounds/home-v1.png", "default_spawn":[505,450],
+    "spawns":[{"id":"from_station","position":[505,450]}],
     "roads":[{"position":[480,280],"size":[650,350],"color":"#b4a17f"}],
     "buildings":[{"position":[300,220],"size":[210,110],"label":"居間","color":"#79533d"},{"position":[650,220],"size":[190,110],"label":"台所","color":"#6f5d48"}],
-    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
-    "portals":[{"id":"home_to_station","position":[480,495],"label":"駅へ向かう","to_map":"station","to_spawn":"from_home"}],
-    "interactions":[{"id":"mother","position":[320,340],"label":"木内の母","verb":"話す","text":"母「初日から無理しなくていいのよ。朝ごはんは食べなさい」"},{"id":"newspaper","position":[610,320],"label":"朝刊","verb":"読む","time_cost":15,"effects":{"expertise":1},"text":"円高、土地価格、コンピュータ化。難しい言葉が紙面に並んでいる。"},{"id":"bed","position":[730,360],"label":"木内の布団","verb":"休む","action":"rest","requires_flags":["first_day_reported"],"blocked_text":"まだ初日の仕事が終わっていない。先に会社へ向かおう。","text":"慣れない一日を終え、木内は深く眠った。翌朝、月次売上の差額が見つかる。"}]
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[190,190],"size":[365,135]},{"position":[220,340],"size":[250,125]},{"position":[720,190],"size":[255,150]},{"position":[790,355],"size":[290,155]},{"position":[590,325],"size":[90,135]}],
+    "portals":[{"id":"home_to_station","position":[505,495],"label":"駅へ向かう","to_map":"station","to_spawn":"from_home"}],
+    "interactions":[
+      {"id":"mother","position":[385,355],"label":"木内の母","verb":"話す","text":"母「初日から無理しなくていいのよ。朝ごはんは食べなさい」"},
+      {"id":"newspaper","position":[285,315],"label":"朝刊","verb":"読む","time_cost":15,"repeat_policy":"once","effects":{"expertise":1},"text":"円高、土地価格、コンピュータ化。難しい言葉が紙面に並んでいる。"},
+      {"id":"home_tv","position":[135,275],"label":"テレビ","verb":"見る","time_cost":15,"effects":{"energy":2},"text":"ニュースの後は野球中継。街の話題と会社の話題が、食卓でゆっくり混ざっていく。"},
+      {"id":"home_phone","position":[590,295],"label":"黒電話","verb":"調べる","time_cost":2,"text":"電話帳の横に、会社と横丁の番号が鉛筆で書かれている。連絡は家族全員に聞こえる場所でする時代だ。"},
+      {"id":"breakfast","position":[785,420],"label":"朝食","verb":"食べる","time_cost":20,"repeat_policy":"once","effects":{"energy":12,"health":2},"text":"炊きたてのご飯、味噌汁、焼き魚。急ぐ朝ほど、食べたかどうかが午後に響く。"},
+      {"id":"home_calendar","position":[340,235],"label":"家の予定表","verb":"見る","time_cost":2,"text":"給料日、町内会、プロ野球の日程。会社だけでは一か月はできていない。"},
+      {"id":"bed","position":[735,245],"label":"木内の布団","verb":"休む","action":"rest","requires_flags":["first_day_reported"],"blocked_text":"まだ初日の仕事が終わっていない。先に会社へ向かおう。","text":"慣れない一日を終え、木内は深く眠った。翌朝、月次売上の差額が見つかる。"}
+    ]
   },
   "yokocho": {
     "display_name":"昭和横丁", "size":[1200,675], "ground":"#2f2730", "background":"res://assets/backgrounds/yokocho-v1.png", "default_spawn":[1080,555],

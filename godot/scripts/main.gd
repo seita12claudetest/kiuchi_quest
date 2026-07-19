@@ -92,8 +92,9 @@ func activate(action: Dictionary) -> void:
 	if String(data.get("action", "")) == "battle":
 		_start_battle()
 		return
-	if String(data.get("id", "")) in ["tanaka", "tanaka_front"] and GameState.has_flag("checked_ledger"):
+	if String(data.get("id", "")) in ["tanaka", "tanaka_front"] and GameState.has_flag("checked_ledger") and not GameState.has_flag("first_day_reported"):
 		GameState.set_flag("first_day_reported")
+		GameState.career_performance += 5
 	open_dialog(String(data.get("label", "")), String(data.get("text", "何もない。")))
 	GameState.apply_interaction(data)
 	_update_hud()
@@ -144,7 +145,9 @@ func _on_battle_finished(result: Dictionary) -> void:
 		GameState.set_flag("first_battle_won")
 		GameState.expertise = mini(100, GameState.expertise + 4)
 		GameState.trust = mini(10, GameState.trust + 1)
-		show_toast("未処理伝票を整理した　専門性+4　信頼+1")
+		GameState.career_performance += 8
+		GameState.politics += 1
+		show_toast("未処理伝票を整理した　専門性+4　信頼+1　実績+8")
 	else:
 		GameState.energy = maxi(0, GameState.energy - 20)
 		GameState.advance_minutes(90)
