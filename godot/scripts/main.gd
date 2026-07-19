@@ -117,7 +117,7 @@ func activate(action: Dictionary) -> void:
 	if String(data.get("id", "")) in ["tanaka", "tanaka_front"] and GameState.has_flag("checked_ledger") and not GameState.has_flag("first_day_reported"):
 		GameState.set_flag("first_day_reported")
 		GameState.career_performance += 5
-	open_dialog(String(data.get("label", "")), String(data.get("text", "何もない。")))
+	open_dialog(String(data.get("label", "")), GameState.dialogue_text(data))
 	GameState.apply_interaction(data)
 	_update_hud()
 
