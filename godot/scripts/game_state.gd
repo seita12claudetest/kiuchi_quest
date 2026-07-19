@@ -29,6 +29,7 @@ var career_performance := 0
 var politics := 0
 var promotion_history: Array = []
 var promotion_notice := ""
+var relationships: Dictionary = {"tanaka":0, "sato":0, "yamakawa":0, "sonoko":0, "santa":0, "goda":0}
 var flags: Dictionary = {}
 var completed_interactions: Dictionary = {}
 
@@ -63,6 +64,8 @@ func apply_interaction(data: Dictionary) -> void:
 	money = maxi(0, money + int(effects.get("money", 0)))
 	career_performance = maxi(0, career_performance + int(effects.get("performance", 0)))
 	politics = maxi(0, politics + int(effects.get("politics", 0)))
+	for person: String in effects.get("relationships", {}):
+		relationships[person] = clampi(int(relationships.get(person, 0)) + int(effects["relationships"][person]), -5, 10)
 	for flag in effects.get("flags", []):
 		flags[String(flag)] = true
 	if not interaction_id.is_empty():
@@ -70,6 +73,8 @@ func apply_interaction(data: Dictionary) -> void:
 	save_game()
 
 func can_interact(data: Dictionary) -> bool:
+	if int(data.get("cost", 0)) > money:
+		return false
 	for required_flag in data.get("requires_flags", []):
 		if not has_flag(String(required_flag)):
 			return false
@@ -167,7 +172,7 @@ func save_game() -> void:
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file == null:
 		return
-	file.store_string(JSON.stringify({"year":year,"month":month,"day":day,"weekday":weekday,"minutes":minutes,"rank":rank,"energy":energy,"trust":trust,"expertise":expertise,"health":health,"money":money,"tenure_months":tenure_months,"career_performance":career_performance,"politics":politics,"promotion_history":promotion_history,"promotion_notice":promotion_notice,"flags":flags,"completed_interactions":completed_interactions}))
+	file.store_string(JSON.stringify({"year":year,"month":month,"day":day,"weekday":weekday,"minutes":minutes,"rank":rank,"energy":energy,"trust":trust,"expertise":expertise,"health":health,"money":money,"tenure_months":tenure_months,"career_performance":career_performance,"politics":politics,"promotion_history":promotion_history,"promotion_notice":promotion_notice,"relationships":relationships,"flags":flags,"completed_interactions":completed_interactions}))
 
 func load_game() -> void:
 	if not FileAccess.file_exists(SAVE_PATH):
@@ -192,6 +197,7 @@ func load_game() -> void:
 	politics = int(data.get("politics", politics))
 	promotion_history = data.get("promotion_history", [])
 	promotion_notice = String(data.get("promotion_notice", promotion_notice))
+	relationships = data.get("relationships", relationships)
 	flags = data.get("flags", {})
 	completed_interactions = data.get("completed_interactions", {})
 

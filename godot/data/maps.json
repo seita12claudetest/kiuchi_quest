@@ -108,11 +108,11 @@
     "interactions":[{"id":"tanuki_owner","position":[480,245],"label":"大将","verb":"話す","text":"大将「新顔だな。無理に飲まなくていい、腹に何か入れていけ」"},{"id":"tanuki_menu","position":[650,180],"label":"品書き","verb":"読む","text":"煮込み、冷奴、焼き鳥。鉛筆で値段が直されている。"},{"id":"tanuki_photo","position":[280,150],"label":"壁の写真","verb":"調べる","text":"開店当時の白黒写真。今より道幅が狭い。"}]
   },
   "santa": {
-    "display_name":"中華そば 三太", "size":[960,540], "ground":"#674132", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
+    "display_name":"中華そば 三太", "size":[960,540], "ground":"#674132", "background":"res://assets/backgrounds/santa-v1.png", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
     "roads":[{"position":[480,270],"size":[700,370],"color":"#8e6242"}], "buildings":[{"position":[480,180],"size":[500,90],"label":"厨房","color":"#5a3328"}],
-    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[480,150],"size":[600,210]},{"position":[150,350],"size":[200,155]},{"position":[815,350],"size":[210,155]}],
     "portals":[{"id":"santa_to_yokocho","position":[480,500],"label":"横丁へ出る","to_map":"yokocho","to_spawn":"from_santa"}],
-    "interactions":[{"id":"santa_owner","position":[480,245],"label":"三太","verb":"話す","text":"三太「醤油か味噌。悩むほどのことじゃない、今日はどっちだ」"},{"id":"santa_noodle","position":[625,250],"label":"製麺箱","verb":"調べる","text":"木箱に縮れ麺が整然と並んでいる。"},{"id":"santa_radio","position":[300,170],"label":"ラジオ","verb":"聞く","text":"プロ野球中継が小さく流れている。"}]
+    "interactions":[{"id":"santa_owner","position":[480,245],"label":"三太","verb":"話す","time_cost":5,"repeat_policy":"once","effects":{"relationships":{"santa":1}},"text":"三太「醤油か味噌。悩むほどのことじゃない、今日はどっちだ」"},{"id":"santa_ramen","position":[220,330],"label":"醤油中華そば","verb":"注文する 420円","cost":420,"time_cost":25,"repeat_policy":"once","effects":{"money":-420,"energy":18,"health":-1,"relationships":{"santa":1},"flags":["ate_santa_ramen"]},"text":"鶏ガラの澄んだ醤油味と縮れ麺。早くて温かい昼食が、午後の仕事へ木内を戻してくれる。"},{"id":"santa_noodle","position":[780,250],"label":"製麺箱","verb":"調べる","text":"木箱に縮れ麺が整然と並んでいる。毎朝届く数で、その日の客足を読んでいる。"},{"id":"santa_radio","position":[155,215],"label":"ラジオ","verb":"聞く","time_cost":5,"text":"プロ野球中継が小さく流れている。常連は音だけで試合の流れを追う。"}]
   },
   "matsu": {
     "display_name":"寿司処 まつ", "size":[960,540], "ground":"#46595a", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
@@ -122,11 +122,11 @@
     "interactions":[{"id":"matsu_owner","position":[480,245],"label":"松岡親方","verb":"話す","text":"親方「給料日前なら、巻物と汁でいい。見栄を張る店じゃない」"},{"id":"matsu_case","position":[650,220],"label":"魚のケース","verb":"調べる","text":"鯵、烏賊、赤身。札に産地が書かれている。"},{"id":"matsu_calendar","position":[280,150],"label":"市場の暦","verb":"調べる","text":"休市日が赤鉛筆で囲まれている。"}]
   },
   "coffee": {
-    "display_name":"純喫茶 珈琲苑", "size":[960,540], "ground":"#594537", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
+    "display_name":"純喫茶 珈琲苑", "size":[960,540], "ground":"#594537", "background":"res://assets/backgrounds/coffee-v1.png", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],
     "roads":[{"position":[480,270],"size":[700,370],"color":"#77604b"}], "buildings":[{"position":[480,180],"size":[500,90],"label":"珈琲カウンター","color":"#392a24"}],
-    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]}],
+    "walls":[{"position":[480,5],"size":[960,10]},{"position":[480,535],"size":[960,10]},{"position":[5,270],"size":[10,540]},{"position":[955,270],"size":[10,540]},{"position":[480,155],"size":[450,205]},{"position":[185,300],"size":[220,145]},{"position":[175,430],"size":[220,110]},{"position":[790,300],"size":[220,145]},{"position":[790,430],"size":[220,110]},{"position":[600,270],"size":[115,110]}],
     "portals":[{"id":"coffee_to_yokocho","position":[480,500],"label":"横丁へ出る","to_map":"yokocho","to_spawn":"from_coffee"}],
-    "interactions":[{"id":"coffee_owner","position":[480,245],"label":"苑子","verb":"話す","text":"苑子「会社の人は、答えを決めてから相談に来るのね」"},{"id":"coffee_newspaper","position":[650,300],"label":"新聞棚","verb":"読む","text":"経済紙、スポーツ紙、夕刊。客によって畳み方が違う。"},{"id":"coffee_phone","position":[290,180],"label":"ピンク電話","verb":"調べる","text":"カウンター横の電話。伝言を頼む客もいるらしい。"}]
+    "interactions":[{"id":"coffee_owner","position":[480,245],"label":"苑子","verb":"話す","time_cost":5,"repeat_policy":"once","effects":{"relationships":{"sonoko":1}},"text":"苑子「会社の人は、答えを決めてから相談に来るのね。ここでは急いで結論を出さなくてもいいのよ」"},{"id":"coffee_blend","position":[350,275],"label":"ブレンド珈琲","verb":"注文する 350円","cost":350,"time_cost":30,"repeat_policy":"once","effects":{"money":-350,"energy":10,"health":1,"relationships":{"sonoko":1},"flags":["drank_coffee_blend"]},"text":"少し苦い深煎りを、苑子が厚いカップで出した。急ぐためではなく考えるために飲む珈琲だ。"},{"id":"coffee_newspaper","position":[610,280],"label":"新聞棚","verb":"読む","time_cost":10,"repeat_policy":"once","effects":{"expertise":1,"flags":["read_kissa_newspaper"]},"text":"経済紙、スポーツ紙、夕刊。地価高騰の記事の隣に、地域商店の閉店を伝える小さな記事がある。"},{"id":"coffee_phone","position":[575,180],"label":"ピンク電話","verb":"調べる","text":"カウンター横の電話。外回りの営業が伝言を頼み、十円玉を積んでいく。"},{"id":"coffee_record","position":[835,155],"label":"レコードプレーヤー","verb":"聴く","time_cost":5,"repeat_policy":"once","effects":{"energy":2},"text":"針を落とす小さな音の後、店の時間が会社よりゆっくり流れ始める。"}]
   },
   "snack": {
     "display_name":"スナック 夜汽車", "size":[960,540], "ground":"#4d3149", "default_spawn":[480,455], "spawns":[{"id":"from_yokocho","position":[480,455]}],

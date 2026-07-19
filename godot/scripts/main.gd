@@ -96,7 +96,8 @@ func activate(action: Dictionary) -> void:
 		change_map(data["to_map"], data["to_spawn"])
 		return
 	if not GameState.can_interact(data):
-		open_dialog(String(data.get("label", "")), String(data.get("blocked_text", "今はまだ必要な情報が足りない。")))
+		var blocked := "所持金が足りない。" if int(data.get("cost", 0)) > GameState.money else String(data.get("blocked_text", "今はまだ必要な情報が足りない。"))
+		open_dialog(String(data.get("label", "")), blocked)
 		return
 	if String(data.get("action", "")) == "rest":
 		if GameState.minutes < 17 * 60 + 30:
