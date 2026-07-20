@@ -2,20 +2,24 @@ import type { GameState, MapDef, Scene } from '@/types'
 import { CollisionSystem } from '@/maps/CollisionSystem'
 import { MapLoader } from '@/maps/MapLoader'
 import { MapRenderer } from '@/maps/MapRenderer'
+import { IsoMapRenderer } from '@/maps/IsoMapRenderer'
 import { THEME } from '@/ui/themes/fantasy'
 
 const GRID_WIDTH = 18
 const GRID_HEIGHT = 12
+const ISO_MAP_IDS = new Set(['yokocho'])
 
 export class MapScene implements Scene {
   private readonly loader: MapLoader
   private readonly renderer: MapRenderer
+  private readonly isoRenderer: IsoMapRenderer
   private map?: MapDef
   private collision?: CollisionSystem
 
   constructor(viewportWidth = 800, viewportHeight = 600, loader = new MapLoader()) {
     this.loader = loader
     this.renderer = new MapRenderer(viewportWidth, viewportHeight)
+    this.isoRenderer = new IsoMapRenderer(viewportWidth, viewportHeight)
   }
 
   enter(state: GameState): void {
@@ -36,7 +40,11 @@ export class MapScene implements Scene {
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
     if (this.map) {
-      this.renderer.render(ctx, this.map, state)
+      if (ISO_MAP_IDS.has(this.map.id)) {
+        this.isoRenderer.render(ctx, this.map, state)
+      } else {
+        this.renderer.render(ctx, this.map, state)
+      }
     } else {
       this.renderFallbackMap(ctx, state)
     }
